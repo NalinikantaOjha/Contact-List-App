@@ -18,7 +18,8 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation()
     }
     private fun bottomNavigation(){
-    bottomNavigation.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener { item ->
+
+        bottomNavigation.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener { item ->
             var temp: Fragment? = null
             when (item.itemId) {
                 R.id.menuContacts -> temp = ContactsFragment()

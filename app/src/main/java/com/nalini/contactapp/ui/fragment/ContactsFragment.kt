@@ -15,10 +15,10 @@ import com.nalini.contactapp.R
 
 
 class ContactsFragment : Fragment() {
-    var colls= listOf<String>(
-        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-        ContactsContract.CommonDataKinds.Phone.NUMBER,
-        ContactsContract.CommonDataKinds.Phone._ID).toTypedArray()
+//    var colls= listOf<String>(
+//        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+//        ContactsContract.CommonDataKinds.Phone.NUMBER,
+//        ContactsContract.CommonDataKinds.Phone._ID).toTypedArray()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
