@@ -19,6 +19,14 @@ class ContactsViewModel(val contactsRepository: ContactRepository): ViewModel() 
 
 
     }
+
+    fun SearchData(search:String): LiveData<List<ContactsEntity>> {
+        return contactsRepository.SearchData(search)
+
+
+    }
+
+
     fun CreateContact(contactsEntity: ContactsEntity){
       viewModelScope.launch  (Dispatchers.IO){
            contactsRepository.CreateContact(contactsEntity)

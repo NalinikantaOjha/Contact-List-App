@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_weight="10"
+    >
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_height="50dp"
+        >
+
+        <TextView
+            android:layout_weight="1"
+            android:text="Select all"
+            android:id="@+id/tvSelectAll"
+            android:layout_width="wrap_content"
+            android:textColor="#87CEEB"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:text="Select items"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:textColor="#87CEEB"
+            android:text="cancel"
+            android:textSize="20dp"
+            android:id="@+id/tvCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+    </LinearLayout>
+    <EditText
+
+        android:gravity="center"
+        android:layout_gravity="start"
+        android:background="@drawable/rounded_button"
+        android:layout_width="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+
+        android:hint="Search among 972 contact"
+        android:layout_height="30dp">
+
+    </EditText>
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:id="@+id/RecycleViewDelete"
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

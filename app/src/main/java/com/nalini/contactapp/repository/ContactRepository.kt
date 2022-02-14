@@ -15,17 +15,16 @@ class ContactRepository(val contactsDao: ContactsDao,val context: Context) {
     val  user:LiveData<ArrayList<ContactsEntity>>
         get()=userLiveData
     fun fetchAll(): LiveData<ArrayList<ContactsEntity>> {
-        var projectionFields= listOf<String>(
+        val projectionFields= listOf<String>(
             ContactsContract.CommonDataKinds.Phone._ID,
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,).toTypedArray()
         val listContacts: ArrayList<ContactsEntity> = ArrayList<ContactsEntity>()
-        val cursorLoader = CursorLoader(context,
+        var cursorLoader = CursorLoader(context,
             ContactsContract.Contacts.CONTENT_URI,
-            projectionFields,  // the columns to retrieve
-            null,  // the selection criteria (none)
-            null,  // the selection args (none)
-            null // the sort order (default)
+            projectionFields, null,null,null
         )
+
+
         val cursor: Cursor = cursorLoader.loadInBackground()
         val contactsMap: MutableMap<String, ContactsEntity> = HashMap<String, ContactsEntity>(cursor.count)
         if (cursor.moveToFirst()) {
@@ -37,7 +36,7 @@ class ContactRepository(val contactsDao: ContactsDao,val context: Context) {
                 if (cursor.getString(nameIndex) != null){
                     contactDisplayName = cursor.getString(nameIndex)
                 }
-                val contact = ContactsEntity(contactDisplayName,contactId.toString())
+                val contact = ContactsEntity(contactDisplayName,contactId.toString(),false)
                 contactsMap[contactId] = contact
                 listContacts.add(contact)
             } while (cursor.moveToNext())
@@ -46,6 +45,7 @@ class ContactRepository(val contactsDao: ContactsDao,val context: Context) {
         userLiveData.postValue(listContacts)
         return user
     }
+
     fun getContact(): LiveData<List<ContactsEntity>> {
         return contactsDao.getContacts()
     }
@@ -61,6 +61,9 @@ class ContactRepository(val contactsDao: ContactsDao,val context: Context) {
     fun delete(contactsEntity: ContactsEntity){
             contactsDao.delete(contactsEntity)
 
+    }
+    fun SearchData(search:String):LiveData<List<ContactsEntity>>{
+       return contactsDao.SearchData(search)
     }
 
 

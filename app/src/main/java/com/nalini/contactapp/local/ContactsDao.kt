@@ -5,6 +5,8 @@ import androidx.room.*
 
 @Dao
 interface ContactsDao {
+    @Query("SELECT * FROM contactTable WHERE name LIKE '%' || :search || '%'")
+    fun SearchData(search: String?): LiveData<List<ContactsEntity>>
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addContacts(contactsEntity: ContactsEntity)
     @Query("select * from contactTable")

@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 data class ContactsEntity(
     @PrimaryKey(autoGenerate = false)@ColumnInfo(name = "name")var name:String="",
     @ColumnInfo(name = "id")var id:String,
+    @ColumnInfo(name="track")var track:Boolean
 
 ) {
 
