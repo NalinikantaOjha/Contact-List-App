@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuContacts"
+        android:iconTint="#87CEEB"
+
+        android:icon="@drawable/ic_baseline_contacts_24"
+        android:title="Contacts">
+    </item>
+
+    <item
+        android:id="@+id/menuPhone"
+        android:icon="@drawable/ic_baseline_phone_24"
+        android:title="Phone">
+    </item>
+    <item
+
+        android:id="@+id/menuGroups"
+        android:icon="@drawable/ic_baseline_group_24"
+        android:title="Groups">
+    </item>
+<!--        android:iconTint="@color/BlueViolet"-->
+
+
+    <item
+        android:id="@+id/menuFevorite"
+        android:icon="@drawable/ic_baseline_star_24"
+        android:title="Favorites">
+    </item>
+</menu>
