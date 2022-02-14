@@ -15,5 +15,9 @@ interface ContactsDao {
     fun update(contactsEntity: ContactsEntity)
     @Delete
     fun delete(contactsEntity: ContactsEntity)
+    @Query("select * from contactTable where track='1'")
+    fun getAllDeleteData() : LiveData<List<ContactsEntity>>
+    @Query("select * from contactTable where favorite='1'")
+    fun getFavoriteContacts() : LiveData<List<ContactsEntity>>
 
 }

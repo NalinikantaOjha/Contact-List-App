@@ -3,6 +3,9 @@ package com.nalini.contactapp.ui.activity
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nalini.contactapp.R
@@ -25,6 +28,8 @@ class EditActivity : AppCompatActivity() ,OnEdit{
     private var contactsList= mutableListOf<ContactsEntity>()
     lateinit var editAdapter: EditAdapter
     private var deleteList= mutableListOf<ContactsEntity>()
+    private var deleteIntList= mutableListOf<Int>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
@@ -38,7 +43,39 @@ class EditActivity : AppCompatActivity() ,OnEdit{
             contactsList.clear()
             contactsList.addAll(it)
             setRecycle()
+
         }
+        tvSelectAll.setOnClickListener {
+           contactsList.forEach {
+               if (it.track==false){
+                   val contact=ContactsEntity(it.name,it.id,true,it.star,it.favorite)
+                   contactsViewModel.update(contact)
+                   deleteList.clear()
+                   deleteList.add(it)
+               }
+               else {
+                   val contact=ContactsEntity(it.name,it.id,false,it.star,it.favorite)
+                   contactsViewModel.update(contact)
+                   deleteList.clear()
+               }
+           }
+        }
+        contactsViewModel.getDelete().observe(this, Observer {
+            deleteList.addAll(it)
+            Log.d("anlinidatadelete",it.size.toString())
+            btnDelete.setOnClickListener {
+                deleteList.forEach {
+                    contactsViewModel.delete(it)
+
+                }
+
+
+
+
+            }
+
+        })
+
 
     }
     fun setRecycle(){
@@ -50,6 +87,13 @@ class EditActivity : AppCompatActivity() ,OnEdit{
 
 
     override fun Delete(contactsEntity: ContactsEntity) {
+        if (contactsEntity.track==false){
+            val contact=ContactsEntity(contactsEntity.name,contactsEntity.id,true,contactsEntity.star,contactsEntity.favorite)
+            contactsViewModel.update(contact)
+        }else{
+            val contact=ContactsEntity(contactsEntity.name,contactsEntity.id,false,contactsEntity.star,contactsEntity.favorite)
+           contactsViewModel.update(contact)
+        }
 
     }
 }

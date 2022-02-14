@@ -7,9 +7,11 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -19,6 +21,7 @@ import com.nalini.contactapp.local.ContactDatabase
 import com.nalini.contactapp.local.ContactsDao
 import com.nalini.contactapp.local.ContactsEntity
 import com.nalini.contactapp.repository.ContactRepository
+import com.nalini.contactapp.ui.activity.AddActivity
 import com.nalini.contactapp.ui.activity.EditActivity
 import com.nalini.contactapp.ui.adapter.ContactAdapter
 import com.nalini.contactapp.viewmodel.ContactsViewModel
@@ -36,7 +39,6 @@ class ContactsFragment : Fragment() {
     lateinit var contactsDatabase: ContactDatabase
     private var contactsList= mutableListOf<ContactsEntity>()
     lateinit var contactAdapter: ContactAdapter
-    private var deleteList= mutableListOf<ContactsEntity>()
 
 
     override fun onCreateView(
@@ -49,8 +51,14 @@ class ContactsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val permissions = arrayOf(Manifest.permission.READ_CONTACTS)
-        ActivityCompat.requestPermissions(this.requireActivity(), permissions, REQUEST_CODE)
+        val permission = arrayOf(
+            Manifest.permission.WRITE_CONTACTS,
+            Manifest.permission.READ_CONTACTS
+        )
+        ActivityCompat.requestPermissions(this.requireActivity(), permission, REQUEST_CODE)
+        ivAddContacts.setOnClickListener {
+            startActivity(Intent(this.context,AddActivity::class.java))
+        }
         contactsDatabase = ContactDatabase.getContactDatabase(requireContext())
         contactsDao = contactsDatabase.getContactDao()
         val contactsRepository=ContactRepository(contactsDao,requireContext())
@@ -86,6 +94,7 @@ class ContactsFragment : Fragment() {
 
         contactsViewModel.Fetch().observe(viewLifecycleOwner) {
             it.forEach {
+
                 contactsViewModel.CreateContact(it)
                }
         }
@@ -93,6 +102,7 @@ class ContactsFragment : Fragment() {
         contactsViewModel.getContacts().observe(viewLifecycleOwner) {
             contactsList.clear()
             contactsList.addAll(it)
+            Log.d("nalinilistsi",contactsList.size.toString())
             setRecycle()
         }
 
@@ -104,24 +114,42 @@ class ContactsFragment : Fragment() {
     }
 
 
-
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String?>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            val permissions1 = arrayOf<String>(Manifest.permission.READ_CONTACTS)
-            ActivityCompat.requestPermissions(this.requireActivity(), permissions1, REQUEST_CODE)
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            }
-            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            }
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            showToast("Storage and Location permission granted")
+        } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_DENIED) {
+            showToast("Storage denied but Location permission granted")
+        } else if (grantResults[0] == PackageManager.PERMISSION_DENIED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            showToast("Location denied but Storage permission granted ")
+        } else if (grantResults[0] == PackageManager.PERMISSION_DENIED && grantResults[1] == PackageManager.PERMISSION_DENIED) {
+            showToast("Both the permission denied")
         }
     }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<String?>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        if (grantResults[0] == PackageManager.PERMISSION_GRANTED&&grantResults[1]==PackageManager.PERMISSION_GRANTED) {
+//        } else if (grantResults[0] == PackageManager.PERMISSION_DENIED||grantResults[1]==PackageManager.PERMISSION_DENIED) {
+//            val permissions1 = arrayOf<String>(Manifest.permission.READ_CONTACTS,Manifest.permission.WRITE_CONTACTS)
+//            ActivityCompat.requestPermissions(this.requireActivity(), permissions1, REQUEST_CODE)
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//            }
+//            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+//            }
+//        }
+//    }
 
 
 }

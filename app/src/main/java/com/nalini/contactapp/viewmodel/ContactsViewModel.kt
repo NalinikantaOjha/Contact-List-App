@@ -19,7 +19,12 @@ class ContactsViewModel(val contactsRepository: ContactRepository): ViewModel() 
 
 
     }
-
+    fun getDelete():LiveData<List<ContactsEntity>>{
+        return contactsRepository.getDelete()
+    }
+    fun getFavorite():LiveData<List<ContactsEntity>>{
+        return contactsRepository.getFavorite()
+    }
     fun SearchData(search:String): LiveData<List<ContactsEntity>> {
         return contactsRepository.SearchData(search)
 

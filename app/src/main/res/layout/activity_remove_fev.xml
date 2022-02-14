@@ -46,33 +46,20 @@
             android:layout_height="wrap_content">
         </TextView>
     </LinearLayout>
-    <TextView
-        android:layout_weight="0.5"
 
-        android:gravity="center"
-        android:layout_gravity="start"
-        android:background="@drawable/rounded_button"
-        android:layout_width="match_parent"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-
-        android:hint="Search among 972 contact"
-        android:layout_height="0dp">
-
-    </TextView>
     <androidx.recyclerview.widget.RecyclerView
 
         android:layout_marginTop="20dp"
         android:layout_weight="7.7"
         android:layout_width="match_parent"
-        android:id="@+id/RecycleViewDelete"
+        android:id="@+id/RecycleViewRemove"
         android:layout_height="0dp">
 
     </androidx.recyclerview.widget.RecyclerView>
     <Button
         android:layout_weight="1"
-        android:text="Delete"
-        android:id="@+id/btnDelete"
+        android:text="Remove"
+        android:id="@+id/btnRemove"
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="0dp">

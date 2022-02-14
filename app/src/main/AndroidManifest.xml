@@ -3,6 +3,7 @@
     package="com.nalini.contactapp">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -11,6 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ContactApp">
+        <activity
+            android:name=".ui.activity.AddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.RemoveFevActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.FavoriteActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.EditActivity"
             android:exported="false" />

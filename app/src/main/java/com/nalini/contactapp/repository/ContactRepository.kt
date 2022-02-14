@@ -21,7 +21,7 @@ class ContactRepository(val contactsDao: ContactsDao,val context: Context) {
         val listContacts: ArrayList<ContactsEntity> = ArrayList<ContactsEntity>()
         var cursorLoader = CursorLoader(context,
             ContactsContract.Contacts.CONTENT_URI,
-            projectionFields, null,null,null
+            projectionFields, null,null,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
         )
 
 
@@ -36,7 +36,7 @@ class ContactRepository(val contactsDao: ContactsDao,val context: Context) {
                 if (cursor.getString(nameIndex) != null){
                     contactDisplayName = cursor.getString(nameIndex)
                 }
-                val contact = ContactsEntity(contactDisplayName,contactId.toString(),false)
+                val contact = ContactsEntity(contactDisplayName,contactId.toInt(),false,false,false)
                 contactsMap[contactId] = contact
                 listContacts.add(contact)
             } while (cursor.moveToNext())
@@ -65,6 +65,11 @@ class ContactRepository(val contactsDao: ContactsDao,val context: Context) {
     fun SearchData(search:String):LiveData<List<ContactsEntity>>{
        return contactsDao.SearchData(search)
     }
+    fun getDelete():LiveData<List<ContactsEntity>>{
+        return contactsDao.getAllDeleteData()
+    }
 
-
+    fun getFavorite():LiveData<List<ContactsEntity>>{
+        return contactsDao.getFavoriteContacts()
+    }
 }

@@ -1,20 +1,19 @@
 package com.nalini.contactapp.ui.adapter
 
-import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.nalini.contactapp.local.ContactsEntity
 import kotlinx.android.synthetic.main.item_layout_edit.view.*
 
-class EditViewHolder(itemView: View,val onEdit: OnEdit): RecyclerView.ViewHolder(itemView) {
+class RemoveViewHolder(itemView: View,val onRemove: OnRemove):RecyclerView.ViewHolder(itemView) {
     fun setData(contactsEntity: ContactsEntity){
         itemView.apply {
             tvContactName.text = contactsEntity.name
-            btnRadioDelete.isChecked = contactsEntity.track != false
-
+            btnRadioDelete.isChecked = contactsEntity.star != true
             btnRadioDelete.setOnClickListener {
-                onEdit.Delete(contactsEntity)
+                onRemove.OnRemove(contactsEntity)
             }
+
         }
     }
 }

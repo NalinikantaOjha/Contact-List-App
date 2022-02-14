@@ -7,9 +7,13 @@
         <entry key="app/src/main/res/drawable/round_button.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/rounded_button (1).xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/rounded_button.xml" value="0.121" />
+        <entry key="app/src/main/res/layout/activity_add.xml" value="0.14175724637681159" />
         <entry key="app/src/main/res/layout/activity_edit.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_favorite.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_remove_fev.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_contacts.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_fevorite.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_layout.xml" value="0.14175724637681159" />
         <entry key="app/src/main/res/layout/item_layout_edit.xml" value="0.1" />
       </map>
