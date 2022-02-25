@@ -44,18 +44,14 @@ class AddActivityO : AppCompatActivity() {
         Log.d("nalinichild", count.toString())
         addNew()
 
-        btnAdd.setOnClickListener {
-            addNew()
-            Log.d("nalinichild", LinerLayoutAdd.childCount.toString())
 
-        }
         tvDone.setOnClickListener {
 
             val contactsEntity = ContactsEntity(etName.text.toString(), false, false, false)
             contactsViewModel.CreateContact(contactsEntity)
             Toast.makeText(context, "Done CLICKED", Toast.LENGTH_LONG).show()
 
-            for (i in 6 until LinerLayoutAdd.childCount) {
+            for (i in 5 until LinerLayoutAdd.childCount) {
                 Log.d("nalinichild", LinerLayoutAdd.childCount.toString())
 
                 val mode: EditText = LinerLayoutAdd.getChildAt(i).findViewById(R.id.AddMode)
