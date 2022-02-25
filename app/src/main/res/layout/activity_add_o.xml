@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.AddActivityO">
+    <LinearLayout
+        android:id="@+id/LinerLayoutAdd"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+
+        android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <LinearLayout
+            android:weightSum="3"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_weight="1"
+                android:text="Cancel"
+                android:id="@+id/tvCancel"
+                android:textColor="#87CEEB"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+            </TextView>
+            <TextView
+                android:layout_weight="1"
+                android:text="New Contact"
+                android:textColor="@color/black"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+            </TextView>
+            <TextView
+                android:layout_weight="1"
+                android:text="Done"
+                android:textColor="#87CEEB"
+                android:id="@+id/tvDone"
+                android:layout_gravity="right"
+                android:gravity="right|center_vertical"
+                android:layout_marginStart="10dp"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+            </TextView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="3"
+            android:orientation="horizontal"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="0dp"
+                android:text="save to"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+            </TextView>
+            <TextView
+                android:layout_width="0dp"
+                android:text="Phone"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+            </TextView>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_height="60dp">
+        <LinearLayout
+            android:weightSum="3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/ic_baseline_account_circle_24"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+            </ImageView>
+            <EditText
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:hint="Name"
+                android:textColor="@color/black"
+                android:id="@+id/etName"
+                android:layout_height="match_parent">
+
+            </EditText>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+        <View
+            android:layout_width="match_parent"
+            android:background="#E0E0E0"
+            android:layout_height="0.1dp">
+
+        </View>
+
+        <View
+            android:layout_width="match_parent"
+            android:background="#E0E0E0"
+            android:layout_height="0.1dp">
+
+        </View>
+        <Button
+            android:id="@+id/btnAdd"
+            android:gravity="center"
+            android:text="Add"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </Button>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -3,16 +3,11 @@
     <item
         android:id="@+id/menuContacts"
         android:iconTint="#87CEEB"
-
         android:icon="@drawable/ic_baseline_contacts_24"
         android:title="Contacts">
     </item>
 
-    <item
-        android:id="@+id/menuPhone"
-        android:icon="@drawable/ic_baseline_phone_24"
-        android:title="Phone">
-    </item>
+
     <item
 
         android:id="@+id/menuGroups"

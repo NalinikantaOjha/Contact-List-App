@@ -1,4 +1,4 @@
-package com.nalini.contactapp.ui.adapter
+package com.nalini.contactapp.ui.iterface
 
 import com.nalini.contactapp.local.ContactsEntity
 

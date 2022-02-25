@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nalini.contactapp.R
 import com.nalini.contactapp.local.ContactsEntity
+import com.nalini.contactapp.ui.iterface.OnFavorite
+import com.nalini.contactapp.ui.viewholder.AddToFevViewHolder
 
 class AddToFevAdapter(val context: Context, val list:MutableList<ContactsEntity>,val onFavorite: OnFavorite):RecyclerView.Adapter<AddToFevViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddToFevViewHolder {

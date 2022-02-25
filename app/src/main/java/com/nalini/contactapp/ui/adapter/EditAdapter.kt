@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nalini.contactapp.R
+import com.nalini.contactapp.local.ContactNumberRelation
 import com.nalini.contactapp.local.ContactsEntity
+import com.nalini.contactapp.ui.iterface.OnEdit
+import com.nalini.contactapp.ui.viewholder.EditViewHolder
 
-class EditAdapter (val context: Context, val list:MutableList<ContactsEntity>,val onEdit: OnEdit): RecyclerView.Adapter<EditViewHolder>() {
+class EditAdapter (val context: Context, val list:MutableList<ContactNumberRelation>,val onEdit: OnEdit): RecyclerView.Adapter<EditViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EditViewHolder {
         val inflater = LayoutInflater.from(context)
 

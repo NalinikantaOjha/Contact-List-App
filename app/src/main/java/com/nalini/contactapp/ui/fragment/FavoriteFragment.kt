@@ -12,20 +12,23 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nalini.contactapp.R
 import com.nalini.contactapp.local.ContactDatabase
+import com.nalini.contactapp.local.ContactNumberRelation
 import com.nalini.contactapp.local.ContactsDao
 import com.nalini.contactapp.local.ContactsEntity
 import com.nalini.contactapp.repository.ContactRepository
 import com.nalini.contactapp.ui.activity.FavoriteActivity
 import com.nalini.contactapp.ui.activity.RemoveFevActivity
+import com.nalini.contactapp.ui.activity.ViewActivity
 import com.nalini.contactapp.ui.adapter.ContactAdapter
 import com.nalini.contactapp.ui.adapter.FavoriteAdapter
+import com.nalini.contactapp.ui.iterface.onView
 import com.nalini.contactapp.viewmodel.ContactsViewModel
 import com.nalini.contactapp.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_contacts.*
 import kotlinx.android.synthetic.main.fragment_fevorite.*
 
 
-class FavoriteFragment : Fragment() {
+class FavoriteFragment : Fragment(),onView {
 
     lateinit var contactsViewModel: ContactsViewModel
     lateinit var contactsDao: ContactsDao
@@ -69,9 +72,14 @@ class FavoriteFragment : Fragment() {
 
     }
     fun setRecycle(){
-        contactAdapter =FavoriteAdapter(context as Activity,fevoriteList)
+        contactAdapter =FavoriteAdapter(context as Activity,fevoriteList,this)
         RecycleViewFavorite.adapter = contactAdapter
         RecycleViewFavorite.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+
+
+    override fun onView(contactNumberRelation: ContactNumberRelation) {
     }
 
 }

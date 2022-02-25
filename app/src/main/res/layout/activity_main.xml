@@ -27,6 +27,7 @@
         app:menu="@menu/navigation_manu"
         app:itemTextColor="#87CEEB"
         app:itemRippleColor="@color/black"
+        app:labelVisibilityMode="labeled"
         android:layout_alignParentLeft="true" />
 
 </RelativeLayout>

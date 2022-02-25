@@ -1,75 +1,200 @@
 package com.nalini.contactapp.repository
 
+import android.content.ContentProviderOperation
 import android.content.Context
-import android.content.CursorLoader
 import android.database.Cursor
 import android.provider.ContactsContract
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.nalini.contactapp.local.ContactsDao
-import com.nalini.contactapp.local.ContactsEntity
+import com.nalini.contactapp.local.*
 
-class ContactRepository(val contactsDao: ContactsDao,val context: Context) {
-    private val userLiveData= MutableLiveData<ArrayList<ContactsEntity>>()
-
-    val  user:LiveData<ArrayList<ContactsEntity>>
+class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
+    private val userLiveData= MutableLiveData<ArrayList<ContactNumberRelation>>()
+    val  user:LiveData<ArrayList<ContactNumberRelation>>
         get()=userLiveData
-    fun fetchAll(): LiveData<ArrayList<ContactsEntity>> {
-        val projectionFields= listOf<String>(
-            ContactsContract.CommonDataKinds.Phone._ID,
-            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,).toTypedArray()
-        val listContacts: ArrayList<ContactsEntity> = ArrayList<ContactsEntity>()
-        var cursorLoader = CursorLoader(context,
-            ContactsContract.Contacts.CONTENT_URI,
+    val projectionFields= listOf<String>(
+        ContactsContract.CommonDataKinds.Phone._ID,
+        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+        ContactsContract.CommonDataKinds.Phone.NUMBER,
+    ).toTypedArray()
+    val listContacts: ArrayList<ContactNumberRelation> = ArrayList<ContactNumberRelation>()
+
+    fun fetchAll(): LiveData<ArrayList<ContactNumberRelation>> {
+                val cursorLoader = android.content.CursorLoader(context,
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
             projectionFields, null,null,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
         )
 
 
         val cursor: Cursor = cursorLoader.loadInBackground()
-        val contactsMap: MutableMap<String, ContactsEntity> = HashMap<String, ContactsEntity>(cursor.count)
+//        val cursor: Cursor = context.contentResolver.query(
+//            ContactsContract.Contacts.CONTENT_URI,
+//            projectionFields,
+//            null,
+//            null,
+//            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")!!
+        val contactsMap: MutableMap<String, ContactNumberRelation> = HashMap<String, ContactNumberRelation>(cursor.count)
         if (cursor.moveToFirst()) {
             val idIndex = cursor.getColumnIndex(ContactsContract.Contacts._ID)
-            val nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+            val nameIndex =
+                cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+            val numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
             do {
                 val contactId = cursor.getString(idIndex)
                 var contactDisplayName = ""
-                if (cursor.getString(nameIndex) != null){
+                var ContactNumber = ""
+                if (cursor.getString(nameIndex) != null) {
                     contactDisplayName = cursor.getString(nameIndex)
                 }
-                val contact = ContactsEntity(contactDisplayName,contactId.toInt(),false,false,false)
+                if (cursor.getString(numberIndex) != null) {
+                    ContactNumber = cursor.getString(numberIndex)
+                }
+                val contactsEntity=ContactsEntity(
+                    contactDisplayName,
+                    false,
+                    false,
+                    false)
+                var numberList= mutableListOf<NumberEntity>()
+                val number=NumberEntity("Phone$contactDisplayName",
+                    contactDisplayName,
+                    false,
+                    false,
+                    false,
+                ContactNumber)
+                numberList.add(number)
+                val contact = ContactNumberRelation(contactsEntity,numberList)
+//                    contactDisplayName,
+//                    contactId.toInt(),
+//                    false,
+//                    false,
+//                    false,
+//                    ContactNumber
+               // )
                 contactsMap[contactId] = contact
                 listContacts.add(contact)
+                Log.d("nalinitest", contactDisplayName)
+
             } while (cursor.moveToNext())
         }
-        cursor.close()
+
         userLiveData.postValue(listContacts)
         return user
+
+
+
+
     }
 
-    fun getContact(): LiveData<List<ContactsEntity>> {
+    fun getContact(): LiveData<List<ContactNumberRelation>> {
         return contactsDao.getContacts()
     }
-    fun CreateContact(contactsEntity: ContactsEntity){
+    fun getAllContact(): LiveData<List<ContactsEntity>> {
+        return contactsDao.getAllContacts()
+    }
+    suspend fun CreateContact(contactsEntity: ContactsEntity){
             contactsDao.addContacts(contactsEntity)
+    }
+    suspend fun CreateContactAll(contactsEntity: List<ContactsEntity>){
+        contactsDao.addContactsAll(contactsEntity)
+    }
+    suspend fun CreateNumber(number:NumberEntity){
+        contactsDao.addNumber(number)
 
 
     }
-    fun update(contactsEntity: ContactsEntity){
+   suspend fun update(contactsEntity: ContactsEntity){
            contactsDao.update(contactsEntity)
 
     }
-    fun delete(contactsEntity: ContactsEntity){
+   suspend fun updateNumber(number: NumberEntity){
+        contactsDao.updateNumber(number)
+
+    }
+   suspend fun delete(contactsEntity: ContactsEntity){
             contactsDao.delete(contactsEntity)
 
     }
-    fun SearchData(search:String):LiveData<List<ContactsEntity>>{
-       return contactsDao.SearchData(search)
+   suspend fun deleteAllContact(){
+        contactsDao.deleteAllDataFromContact()
+    }
+   suspend fun deleteAllNumber(){
+        contactsDao.deleteAllDataFromNumber()
+    }
+    fun deleteNumber(number: NumberEntity){
+        contactsDao.deleteNumber(number)
+
+    }
+    fun getContactNumberRelation(id:String):LiveData<List<ContactNumberRelation>>{
+       return contactsDao.getContactNumberRelation(id)
+    }
+    fun SearchData(search:String):LiveData<List<ContactNumberRelation>>{
+       return contactsDao.searchData(search)
+    }
+    fun SearchDataNumber(search:String):LiveData<List<NumberEntity>>{
+        return contactsDao.searchDataNumber(search)
+    }
+    fun SearchDataNumberList(search:String):LiveData<List<NumberEntity>>{
+        return contactsDao.searchDataNumberList(search)
     }
     fun getDelete():LiveData<List<ContactsEntity>>{
         return contactsDao.getAllDeleteData()
     }
-
+    fun getDeleteAllNumber():LiveData<List<NumberEntity>>{
+        return contactsDao.getAllDeleteDataNumber()
+    }
     fun getFavorite():LiveData<List<ContactsEntity>>{
         return contactsDao.getFavoriteContacts()
+    }
+
+     fun saveContact(name:String,phone:String) {
+
+         val contact= ArrayList<ContentProviderOperation>()
+         contact.add(ContentProviderOperation.newInsert(
+             ContactsContract.RawContacts.CONTENT_URI)
+             .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+             .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+             .build()
+         )
+
+         if (name != null) {
+             contact.add(
+                 ContentProviderOperation.newInsert(
+                     ContactsContract.Data.CONTENT_URI)
+                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                     .withValue(
+                         ContactsContract.Data.MIMETYPE,
+                         ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                     .withValue(
+                         ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
+                         name).build()
+             )
+         }
+
+         if (phone != null) {
+             contact.add(
+                 ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                     .withValue(
+                         ContactsContract.Data.MIMETYPE,
+                         ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                     .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phone)
+                     .withValue(
+                         ContactsContract.CommonDataKinds.Phone.TYPE,
+                         ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE
+                     )
+                     .build()
+             )
+         }
+
+         try {
+             context.contentResolver.applyBatch(ContactsContract.AUTHORITY, contact)
+
+         } catch (e: Exception) {
+             e.printStackTrace()
+         }
+
+
+
     }
 }

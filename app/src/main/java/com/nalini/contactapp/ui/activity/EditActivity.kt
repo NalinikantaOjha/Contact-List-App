@@ -1,34 +1,28 @@
 package com.nalini.contactapp.ui.activity
 
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nalini.contactapp.R
-import com.nalini.contactapp.local.ContactDatabase
-import com.nalini.contactapp.local.ContactsDao
-import com.nalini.contactapp.local.ContactsEntity
+import com.nalini.contactapp.local.*
 import com.nalini.contactapp.repository.ContactRepository
-import com.nalini.contactapp.ui.adapter.ContactAdapter
 import com.nalini.contactapp.ui.adapter.EditAdapter
-import com.nalini.contactapp.ui.adapter.OnEdit
+import com.nalini.contactapp.ui.iterface.OnEdit
 import com.nalini.contactapp.viewmodel.ContactsViewModel
 import com.nalini.contactapp.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.fragment_contacts.*
 
-class EditActivity : AppCompatActivity() ,OnEdit{
+class EditActivity : AppCompatActivity() , OnEdit {
     lateinit var contactsViewModel: ContactsViewModel
     lateinit var contactsDao: ContactsDao
     lateinit var contactsDatabase: ContactDatabase
-    private var contactsList= mutableListOf<ContactsEntity>()
+    private var contactsList= mutableListOf<ContactNumberRelation>()
     lateinit var editAdapter: EditAdapter
-    private var deleteList= mutableListOf<ContactsEntity>()
-    private var deleteIntList= mutableListOf<Int>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,39 +36,49 @@ class EditActivity : AppCompatActivity() ,OnEdit{
         contactsViewModel.getContacts().observe(this) {
             contactsList.clear()
             contactsList.addAll(it)
+            search_text.hint = "Search among " + contactsList.size + " contact"
+
             setRecycle()
 
         }
         tvSelectAll.setOnClickListener {
+
            contactsList.forEach {
-               if (it.track==false){
-                   val contact=ContactsEntity(it.name,it.id,true,it.star,it.favorite)
-                   contactsViewModel.update(contact)
-                   deleteList.clear()
-                   deleteList.add(it)
+               if (!it.contactsEntity.track) {
+                   it.number.forEach {
+                       it.track=true
+                       contactsViewModel.updateNumber(it)
+                   }
+                   it.contactsEntity.track = true
+                   contactsViewModel.update(it.contactsEntity)
                }
                else {
-                   val contact=ContactsEntity(it.name,it.id,false,it.star,it.favorite)
-                   contactsViewModel.update(contact)
-                   deleteList.clear()
+                   it.contactsEntity.track = false
+                   contactsViewModel.update(it.contactsEntity)
+
                }
            }
         }
-        contactsViewModel.getDelete().observe(this, Observer {
-            deleteList.addAll(it)
-            Log.d("anlinidatadelete",it.size.toString())
+
             btnDelete.setOnClickListener {
-                deleteList.forEach {
-                    contactsViewModel.delete(it)
+                contactsViewModel.getDeleteAllNumber().observe(this, Observer {
+                    it.forEach {
+                        contactsViewModel.deleteNumber(it)
+                    }
+                })
+                contactsViewModel.getDelete().observe(this, Observer {
+                    it.forEach {
+                 contactsViewModel.delete(it)
+}
+                })
 
-                }
 
 
-
+                onBackPressed()
 
             }
 
-        })
+
 
 
     }
@@ -86,14 +90,27 @@ class EditActivity : AppCompatActivity() ,OnEdit{
 
 
 
-    override fun Delete(contactsEntity: ContactsEntity) {
-        if (contactsEntity.track==false){
-            val contact=ContactsEntity(contactsEntity.name,contactsEntity.id,true,contactsEntity.star,contactsEntity.favorite)
-            contactsViewModel.update(contact)
-        }else{
-            val contact=ContactsEntity(contactsEntity.name,contactsEntity.id,false,contactsEntity.star,contactsEntity.favorite)
-           contactsViewModel.update(contact)
-        }
 
+
+
+
+    override fun Delete(contactNumberRelation: ContactNumberRelation) {
+        if (!contactNumberRelation.contactsEntity.track){
+            contactNumberRelation.contactsEntity.track=true
+              // val contact=ContactsEntity(contactNumberRelation.contactsEntity.name,contactNumberRelation.contactsEntity.id,true,contactNumberRelation.contactsEntity.star,contactNumberRelation.contactsEntity.favorite)
+            contactsViewModel.update(contactNumberRelation.contactsEntity)
+            contactNumberRelation.number.forEach {
+                it.apply {
+                    track=true
+                }
+                contactsViewModel.updateNumber(it)
+
+
+            }
+        }else{
+            contactNumberRelation.contactsEntity.track=false
+            contactsViewModel.update(contactNumberRelation.contactsEntity)
+            // val contact=ContactsEntity(contactNumberRelation.contactsEntity.name,contactNumberRelation.contactsEntity.id,false,contactNumberRelation.contactsEntity.star,contactNumberRelation.contactsEntity.favorite)
+        }
     }
 }

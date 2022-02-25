@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="70dp">
+<LinearLayout
+    android:weightSum="3"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:text="Phone"
+        android:id="@+id/AddMode"
+        android:gravity="center"
+        android:layout_height="match_parent">
+
+    </EditText>
+    <EditText
+        android:layout_width="0dp"
+        android:layout_weight="1.8"
+        android:hint="Phone"
+        android:textColor="@color/black"
+        android:id="@+id/AddPhone"
+        android:layout_height="match_parent">
+
+    </EditText>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:id="@+id/ivImageView"
+        android:layout_weight="0.2"
+        android:src="@drawable/ic_baseline_delete_24"
+        android:layout_height="40dp">
+
+    </ImageView>
+</LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -6,6 +6,10 @@
     android:orientation="vertical"
     android:layout_weight="10"
     tools:context=".ui.fragment.ContactsFragment">
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_marginBottom="10dp"
+    android:layout_height="wrap_content">
 
    <LinearLayout
        android:layout_marginTop="10dp"
@@ -13,7 +17,8 @@
        android:layout_width="match_parent"
        android:orientation="horizontal"
        android:weightSum="3"
-       android:layout_height="50dp"
+
+       android:layout_height="40dp"
        >
 
        <TextView
@@ -44,6 +49,8 @@
            android:layout_height="40dp">
        </ImageView>
    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
     <EditText
 
         android:gravity="center"
@@ -53,17 +60,29 @@
         android:id="@+id/searchView"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-
+android:layout_marginBottom="10dp"
         android:hint="Search among 972 contact"
         android:layout_height="30dp">
 
     </EditText>
+    <View
+        android:layout_width="match_parent"
+        android:background="#E0E0E0"
+        android:layout_height="0.1dp">
+
+    </View>
     <androidx.recyclerview.widget.RecyclerView
 
-        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:id="@+id/RecycleViewSearch"
+        android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
+    <androidx.recyclerview.widget.RecyclerView
+
         android:layout_width="match_parent"
        android:id="@+id/RecycleView"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     </androidx.recyclerview.widget.RecyclerView>
 

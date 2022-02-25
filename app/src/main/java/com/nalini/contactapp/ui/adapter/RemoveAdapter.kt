@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nalini.contactapp.R
 import com.nalini.contactapp.local.ContactsEntity
+import com.nalini.contactapp.ui.iterface.OnRemove
+import com.nalini.contactapp.ui.viewholder.RemoveViewHolder
 
 class RemoveAdapter (val context: Context, val list:MutableList<ContactsEntity>, val onRemove: OnRemove):RecyclerView.Adapter<RemoveViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RemoveViewHolder {
