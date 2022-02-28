@@ -12,7 +12,7 @@ fun setData(contactNumberRelation: ContactNumberRelation){
     itemView.apply {
         tvContactName.text = contactNumberRelation.contactsEntity.name
         Contacts.setOnClickListener {
-            onView.onView(contactNumberRelation)
+            onView.onView(contactNumberRelation.contactsEntity)
         }
     }
 }

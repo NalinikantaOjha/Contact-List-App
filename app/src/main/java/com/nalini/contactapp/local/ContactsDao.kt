@@ -2,7 +2,6 @@ package com.nalini.contactapp.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import androidx.room.FtsOptions.Order
 
 
 @Dao
@@ -14,6 +13,10 @@ interface ContactsDao {
     fun searchDataNumber(search: String?): LiveData<List<NumberEntity>>
     @Query("SELECT * FROM NumberEntity WHERE name  LIKE '%' || :search || '%' ")
     fun searchDataNumberList(search: String?): LiveData<List<NumberEntity>>
+    @Query("DELETE FROM NumberEntity WHERE mode = :id")
+    fun deleteById(id: String)
+    @Query("SELECT * FROM NumberEntity WHERE name  = :search")
+    fun searchDataNumberListTest(search: String?): LiveData<List<NumberEntity>>
     @Insert(onConflict = OnConflictStrategy.REPLACE)
 suspend    fun addContacts(contactsEntity: ContactsEntity)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -44,6 +47,9 @@ suspend    fun addContacts(contactsEntity: ContactsEntity)
    suspend fun deleteAllDataFromNumber()
     @Transaction
     @Query("SELECT * FROM NumberEntity WHERE name= :id")
-     fun getContactNumberRelation(id: String): LiveData<List<ContactNumberRelation>>
+     fun getContactNumberRelation(id: String): LiveData<List<ContactNumberRelation?>>
 
+
+    @Query("delete from NumberEntity where number= :id and name= :name")
+    suspend fun deleteSpecificNumber(id:String,name:String)
 }

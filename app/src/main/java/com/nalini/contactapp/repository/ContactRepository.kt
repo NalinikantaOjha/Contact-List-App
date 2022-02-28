@@ -10,6 +10,8 @@ import androidx.lifecycle.MutableLiveData
 import com.nalini.contactapp.local.*
 
 class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
+
+
     private val userLiveData= MutableLiveData<ArrayList<ContactNumberRelation>>()
     val  user:LiveData<ArrayList<ContactNumberRelation>>
         get()=userLiveData
@@ -113,7 +115,9 @@ class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
     }
    suspend fun delete(contactsEntity: ContactsEntity){
             contactsDao.delete(contactsEntity)
-
+    }
+    suspend fun deleteId(id: String){
+        contactsDao.deleteById(id)
     }
    suspend fun deleteAllContact(){
         contactsDao.deleteAllDataFromContact()
@@ -125,7 +129,7 @@ class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
         contactsDao.deleteNumber(number)
 
     }
-    fun getContactNumberRelation(id:String):LiveData<List<ContactNumberRelation>>{
+    fun getContactNumberRelation(id:String):LiveData<List<ContactNumberRelation?>>{
        return contactsDao.getContactNumberRelation(id)
     }
     fun SearchData(search:String):LiveData<List<ContactNumberRelation>>{
@@ -137,6 +141,9 @@ class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
     fun SearchDataNumberList(search:String):LiveData<List<NumberEntity>>{
         return contactsDao.searchDataNumberList(search)
     }
+    fun SearchDataNumberListTest(search:String):LiveData<List<NumberEntity>>{
+        return contactsDao.searchDataNumberListTest(search)
+    }
     fun getDelete():LiveData<List<ContactsEntity>>{
         return contactsDao.getAllDeleteData()
     }
@@ -146,55 +153,10 @@ class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
     fun getFavorite():LiveData<List<ContactsEntity>>{
         return contactsDao.getFavoriteContacts()
     }
-
-     fun saveContact(name:String,phone:String) {
-
-         val contact= ArrayList<ContentProviderOperation>()
-         contact.add(ContentProviderOperation.newInsert(
-             ContactsContract.RawContacts.CONTENT_URI)
-             .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
-             .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
-             .build()
-         )
-
-         if (name != null) {
-             contact.add(
-                 ContentProviderOperation.newInsert(
-                     ContactsContract.Data.CONTENT_URI)
-                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                     .withValue(
-                         ContactsContract.Data.MIMETYPE,
-                         ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                     .withValue(
-                         ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
-                         name).build()
-             )
-         }
-
-         if (phone != null) {
-             contact.add(
-                 ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                     .withValue(
-                         ContactsContract.Data.MIMETYPE,
-                         ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                     .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phone)
-                     .withValue(
-                         ContactsContract.CommonDataKinds.Phone.TYPE,
-                         ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE
-                     )
-                     .build()
-             )
-         }
-
-         try {
-             context.contentResolver.applyBatch(ContactsContract.AUTHORITY, contact)
-
-         } catch (e: Exception) {
-             e.printStackTrace()
-         }
-
-
-
+    suspend fun deleteSpecificNumber(id:String,name:String){
+        contactsDao.deleteSpecificNumber(id,name)
     }
+
+
+
 }

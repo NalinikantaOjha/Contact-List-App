@@ -74,16 +74,11 @@ android:layout_marginBottom="10dp"
     <androidx.recyclerview.widget.RecyclerView
 
         android:layout_width="match_parent"
-        android:id="@+id/RecycleViewSearch"
+        android:id="@+id/RecycleView"
         android:layout_height="wrap_content">
 
     </androidx.recyclerview.widget.RecyclerView>
-    <androidx.recyclerview.widget.RecyclerView
 
-        android:layout_width="match_parent"
-       android:id="@+id/RecycleView"
-        android:layout_height="wrap_content">
 
-    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

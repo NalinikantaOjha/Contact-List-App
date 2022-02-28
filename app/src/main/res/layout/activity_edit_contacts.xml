@@ -58,7 +58,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         >
@@ -91,7 +91,7 @@
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:layout_height="60dp">
         <LinearLayout
             android:weightSum="3"
@@ -125,15 +125,6 @@
 
 
 
-
-<Button
-    android:layout_width="wrap_content"
-    android:id="@+id/btnAddLayout"
-    android:layout_gravity="center"
-    android:text="Add"
-    android:layout_height="wrap_content">
-
-</Button>
 
     </LinearLayout>
 

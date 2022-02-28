@@ -11,9 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.nalini.contactapp.R
+import com.nalini.contactapp.local.ContactDatabase
+import com.nalini.contactapp.local.ContactsDao
 import com.nalini.contactapp.ui.fragment.ContactsFragment
 import com.nalini.contactapp.ui.fragment.FavoriteFragment
 import com.nalini.contactapp.ui.fragment.GroupsFragment
+import com.nalini.contactapp.viewmodel.ContactsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -41,4 +44,8 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
+
+
+
+
 }

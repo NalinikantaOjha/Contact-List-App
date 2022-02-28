@@ -17,6 +17,7 @@ import com.nalini.contactapp.viewmodel.ContactsViewModel
 import com.nalini.contactapp.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_view.*
 import kotlinx.android.synthetic.main.fragment_fevorite.*
+import java.lang.Exception
 
 class ViewActivity : AppCompatActivity() {
     lateinit var contactsViewModel: ContactsViewModel
@@ -43,14 +44,21 @@ class ViewActivity : AppCompatActivity() {
 
             startActivity(intent)
         }
+        setRecycle()
 
-        contactsViewModel.getContactNumberRelation(contactsEntity!!.name).observe(this, Observer {
-         numberlist= it[0].number as MutableList<NumberEntity>
-            setRecycle()
-           // PhoneNumber.text=it[0].number[0].number.toString()
-          //  Log.d("naliniwork",it[0].number[0].number.toString())
+    contactsViewModel.getContactNumberRelation(contactsEntity!!.name).observe(this, Observer {
+if(it.size>0){
+    numberlist.clear()
+    numberlist.addAll(it[0]?.number as MutableList<NumberEntity>)
+    numberAdapter.notifyDataSetChanged()
+}else{
+    numberlist.clear()
+    numberAdapter.notifyDataSetChanged()
+}
 
-        })
+    })
+
+
 
 
 

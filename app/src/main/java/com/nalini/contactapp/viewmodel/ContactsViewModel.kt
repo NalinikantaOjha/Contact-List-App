@@ -1,6 +1,11 @@
 package com.nalini.contactapp.viewmodel
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nalini.contactapp.local.ContactNumberRelation
@@ -12,10 +17,27 @@ import kotlinx.coroutines.launch
 
 
 class ContactsViewModel (val contactsRepository: ContactRepository): ViewModel() {
-    fun Fetch(): LiveData<ArrayList<ContactNumberRelation>> {
 
-       return contactsRepository.fetchAll()
+    private  var data: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+
+    val Data:LiveData<Boolean> =data
+
+    fun name(context: Context):LiveData<Boolean>{
+        if ( ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED){
+            data.postValue(true)
+            return Data
+        }else{
+            data.postValue(false)  // ActivityCompat.requestPermissions(context as Activity, permissions, REQUEST_CODE)
+            return Data
+        }
     }
+
+
+    fun Fetch(): LiveData<ArrayList<ContactNumberRelation>> {
+    return contactsRepository.fetchAll()
+
+}
+
 
     fun getContacts(): LiveData<List<ContactNumberRelation>> {
         return contactsRepository.getContact()
@@ -58,6 +80,9 @@ class ContactsViewModel (val contactsRepository: ContactRepository): ViewModel()
     fun SearchDataNumberList(search:String): LiveData<List<NumberEntity>> {
         return contactsRepository.SearchDataNumberList(search)
     }
+    fun SearchDataNumberListTest(search:String): LiveData<List<NumberEntity>> {
+        return contactsRepository.SearchDataNumberListTest(search)
+    }
     fun CreateNumber(numberEntity: NumberEntity){
         viewModelScope.launch  (Dispatchers.IO){
             contactsRepository.CreateNumber(numberEntity)
@@ -95,6 +120,12 @@ class ContactsViewModel (val contactsRepository: ContactRepository): ViewModel()
 
         }
     }
+    fun deleteId(id: String){
+        viewModelScope.launch  (Dispatchers.IO){
+            contactsRepository.deleteId(id)
+
+        }
+    }
     fun deleteNumber(numberEntity: NumberEntity){
         viewModelScope.launch  (Dispatchers.IO){
             contactsRepository.deleteNumber(numberEntity)
@@ -104,8 +135,14 @@ class ContactsViewModel (val contactsRepository: ContactRepository): ViewModel()
      fun saveContact(name:String,phone:String) {
         contactsRepository.saveContact(name,phone)
     }
-    fun getContactNumberRelation(id:String):LiveData<List<ContactNumberRelation>>{
+    fun getContactNumberRelation(id:String): LiveData<List<ContactNumberRelation?>> {
         return contactsRepository.getContactNumberRelation(id)
+    }
+    fun deleteSpecificNumber(id: String,name: String){
+        viewModelScope.launch  (Dispatchers.IO){
+            contactsRepository.deleteSpecificNumber(id,name)
+
+        }
     }
 
     }

@@ -79,7 +79,7 @@ class FavoriteFragment : Fragment(),onView {
 
 
 
-    override fun onView(contactNumberRelation: ContactNumberRelation) {
+    override fun onView(contactNumberRelation: ContactsEntity) {
     }
 
 }

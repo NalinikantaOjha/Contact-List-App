@@ -6,34 +6,82 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModelProviders
 import com.nalini.contactapp.R
+import com.nalini.contactapp.local.ContactDatabase
+import com.nalini.contactapp.local.ContactsDao
+import com.nalini.contactapp.repository.ContactRepository
+import com.nalini.contactapp.viewmodel.ContactsViewModel
+import com.nalini.contactapp.viewmodel.ViewModelFactory
 
 class MainActivity2 : AppCompatActivity() {
     private val REQUEST_CODE = 0
     private var check=false
-
+    val context=this
+    lateinit var contactsViewModel: ContactsViewModel
+    lateinit var contactsDao: ContactsDao
+    lateinit var contactsDatabase: ContactDatabase
+    val permissions =
+        arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
-        val permissions =
-            arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
-        ActivityCompat.requestPermissions(this@MainActivity2, permissions, REQUEST_CODE)
+
+
+        contactsDatabase = ContactDatabase.getContactDatabase(this)
+        contactsDao = contactsDatabase.getContactDao()
+        val contactsRepository = ContactRepository(contactsDao,this)
+        val viewModelFactory = ViewModelFactory(contactsRepository)
+        contactsViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(ContactsViewModel::class.java)
+
+        contactsViewModel.name(this).observe(this){
+        Log.d("anliniboolean",it.toString())
+
+        if (it){
+        startActivity(Intent(this,MainActivity::class.java))
+
+        //Log.d("anliniboolean",it.toString())
+
+        }
+        else{
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE)
+
+       // Log.d("anliniboolean",it.toString())
+
+        }
+
+}
+
+
+
 
 
 
 }
+//
+//    override fun onResume() {
+//        super.onResume()
+//       contactsViewModel.name(this)
+//    }
 
     override fun onRestart() {
         super.onRestart()
-        val permissions =
-            arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
-        ActivityCompat.requestPermissions(this@MainActivity2, permissions, REQUEST_CODE)
+        contactsViewModel.Data.observe(this){
+            if (it){
+                startActivity(Intent(this,MainActivity::class.java))
+
+            }else{
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE)
+
+            }
+        }
 
     }
-
 
 
     override fun onRequestPermissionsResult(
