@@ -16,6 +16,7 @@ import com.nalini.contactapp.local.ContactsDao
 import com.nalini.contactapp.ui.fragment.ContactsFragment
 import com.nalini.contactapp.ui.fragment.FavoriteFragment
 import com.nalini.contactapp.ui.fragment.GroupsFragment
+import com.nalini.contactapp.ui.fragment.PhoneFragment
 import com.nalini.contactapp.viewmodel.ContactsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.menuContacts -> temp = ContactsFragment()
                 R.id.menuGroups -> temp = GroupsFragment()
                 R.id.menuFevorite -> temp = FavoriteFragment()
+
             }
             if (temp != null) {
                 supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment, temp)

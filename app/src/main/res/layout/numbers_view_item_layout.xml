@@ -33,30 +33,31 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="15dp"
                 android:layout_width="100dp"
                 android:orientation="horizontal"
                 android:weightSum="2"
                 android:layout_alignParentRight="true"
                 android:layout_height="40dp">
 
+
                 <ImageView
                     android:layout_weight="1"
-
-                    android:id="@+id/ivMessage"
-                    android:layout_width="40dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/ic_baseline_message_24"
-                    android:layout_height="40dp">
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/ivCall"
+                    android:layout_width="30dp"
+                    android:layout_alignLeft="@id/ivMessage"
+                    android:src="@drawable/ic_baseline_call_24"
+                    android:layout_height="30dp">
 
                 </ImageView>
                 <ImageView
                     android:layout_weight="1"
 
-                    android:id="@+id/ivCall"
-                    android:layout_width="40dp"
-                    android:layout_alignLeft="@id/ivMessage"
-                    android:src="@drawable/ic_baseline_call_24"
-                    android:layout_height="40dp">
+                    android:id="@+id/ivMessage"
+                    android:layout_width="30dp"
+                    android:src="@drawable/ic_baseline_message_24"
+                    android:layout_height="30dp">
 
                 </ImageView>
             </LinearLayout>

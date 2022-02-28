@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
-android:layout_height="60dp">
+android:layout_height="50dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
 <LinearLayout
     android:weightSum="3"
     android:orientation="horizontal"
@@ -11,6 +16,7 @@ android:layout_height="60dp">
         android:layout_width="0dp"
         android:layout_weight="1"
         android:text="@string/phone"
+        android:textStyle="normal"
         android:id="@+id/AddMode"
         android:gravity="center"
         android:layout_height="60dp">
@@ -20,20 +26,29 @@ android:layout_height="60dp">
         android:layout_width="0dp"
         android:layout_weight="1.8"
         android:hint="Phone"
+        android:textStyle="normal"
         android:textColor="@color/black"
         android:id="@+id/AddPhone"
         android:layout_height="60dp">
 
     </EditText>
     <ImageView
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_width="30dp"
         android:id="@+id/ivImageView"
         android:layout_weight="0.2"
         android:src="@drawable/ic_baseline_delete_24"
-        android:layout_height="40dp">
+        android:layout_height="30dp">
 
     </ImageView>
+
 </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="#E0E0E0"
+        android:layout_height="0.1dp">
+
+    </View>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

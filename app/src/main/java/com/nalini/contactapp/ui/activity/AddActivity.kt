@@ -33,8 +33,7 @@ class AddActivity : AppCompatActivity() {
         tvDone.setOnClickListener {
             val name = etName.text.toString()
             val phone = etPhone.text.toString()
-            contactsViewModel.saveContact(name,phone)
-            onBackPressed()
+
 
         }
 

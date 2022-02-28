@@ -62,6 +62,7 @@ class ContactsFragment : Fragment() ,onView{
             ivAddContacts.setOnClickListener {
                 startActivity(Intent(this.context, AddActivityO::class.java))
             }
+        Progressbar.visibility=View.VISIBLE
         val permissions =
             arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
             contactsDatabase = ContactDatabase.getContactDatabase(requireContext())
@@ -130,6 +131,7 @@ class ContactsFragment : Fragment() ,onView{
                                 contactsList.addAll(it)
                                 Log.d("naliniafter",s.toString()+"string")
                                 RecycleView.visibility=View.VISIBLE
+                                Progressbar.visibility=View.GONE
 
                                 contactAdapter.notifyDataSetChanged()
                             }

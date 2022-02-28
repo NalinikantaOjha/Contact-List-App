@@ -2,6 +2,7 @@ package com.nalini.contactapp.ui.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,13 +14,14 @@ import com.nalini.contactapp.local.*
 import com.nalini.contactapp.repository.ContactRepository
 import com.nalini.contactapp.ui.adapter.FavoriteAdapter
 import com.nalini.contactapp.ui.adapter.NumbersAdapter
+import com.nalini.contactapp.ui.iterface.OnCall
 import com.nalini.contactapp.viewmodel.ContactsViewModel
 import com.nalini.contactapp.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_view.*
 import kotlinx.android.synthetic.main.fragment_fevorite.*
 import java.lang.Exception
 
-class ViewActivity : AppCompatActivity() {
+class ViewActivity : AppCompatActivity(),OnCall {
     lateinit var contactsViewModel: ContactsViewModel
     lateinit var contactsDao: ContactsDao
     lateinit var contactsDatabase: ContactDatabase
@@ -64,9 +66,22 @@ if(it.size>0){
 
     }
     fun setRecycle(){
-        numberAdapter = NumbersAdapter(this,numberlist)
+        numberAdapter = NumbersAdapter(this,numberlist,this)
        RecycleViewNumbers.adapter = numberAdapter
         RecycleViewNumbers.layoutManager = LinearLayoutManager(this)
+    }
+
+    override fun onCall(numberEntity: NumberEntity) {
+         val uri = "tel:" + numberEntity.number.trim()
+        val intent = Intent(Intent.ACTION_DIAL)
+         intent.setData(Uri.parse(uri))
+        startActivity(intent)
+    }
+
+    override fun onSms(numberEntity: NumberEntity) {
+        val it = Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"+ numberEntity.number))
+        startActivity(it)
+
     }
 
 }

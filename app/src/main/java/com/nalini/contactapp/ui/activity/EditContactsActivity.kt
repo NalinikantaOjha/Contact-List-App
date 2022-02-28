@@ -118,7 +118,11 @@ class EditContactsActivity : AppCompatActivity() {
         LinerLayoutEdit.addView(infalater, LinerLayoutEdit.childCount)
         val delete:ImageView= infalater.findViewById(R.id.ivImageView)
         val mode:EditText= infalater.findViewById(R.id.AddMode)
-        mode.setText(m)
+       var a=""
+       for (i in 0 until 5){
+          a= a+m.get(i)
+       }
+        mode.setText(a)
         val num:EditText=infalater.findViewById(R.id.AddPhone)
         num.setText(number)
         delete.setOnClickListener {

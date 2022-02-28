@@ -132,9 +132,7 @@ class ContactsViewModel (val contactsRepository: ContactRepository): ViewModel()
 
         }
     }
-     fun saveContact(name:String,phone:String) {
-        contactsRepository.saveContact(name,phone)
-    }
+
     fun getContactNumberRelation(id:String): LiveData<List<ContactNumberRelation?>> {
         return contactsRepository.getContactNumberRelation(id)
     }
