@@ -39,6 +39,7 @@ class EditContactsActivity : AppCompatActivity() {
             list.forEach {
                 contactsViewModel.deleteSpecificNumber(it.id,it.name)
             }
+
             if (LinerLayoutEdit.childCount>4){
                 val mode: EditText = LinerLayoutEdit.getChildAt(4).findViewById(R.id.AddMode)
                 val num: EditText = LinerLayoutEdit.getChildAt(4).findViewById(R.id.AddPhone)
@@ -56,7 +57,7 @@ class EditContactsActivity : AppCompatActivity() {
             }
 
             //9	PhoneAKD	AKD	0	0	0	9853208654
-            for (i in 5+a until LinerLayoutEdit.childCount) {
+            for (i in 5+a until LinerLayoutEdit.childCount-1) {
                 Log.d("nalinichild", LinerLayoutEdit.childCount.toString())
 
                 val mode: EditText = LinerLayoutEdit.getChildAt(i).findViewById(R.id.AddMode)
@@ -89,7 +90,16 @@ class EditContactsActivity : AppCompatActivity() {
         val contactsEntity= intent.getStringExtra("nalini10")
         etName.setText(contactsEntity.toString())
         Log.d("nalinichildoncreate",LinerLayoutEdit.childCount.toString())
+        ivDeleteContact.setOnClickListener {
+            contactsViewModel.getContactEntity(contactsEntity.toString()).observe(this,
+                Observer {
+if (it!=null){
+    contactsViewModel.delete(it)
 
+}
+                })
+            onBackPressed()
+        }
         contactsViewModel.SearchDataNumberListTest(contactsEntity.toString()).observe(this) {
             if (it.size > 0) {
                 a += it.size

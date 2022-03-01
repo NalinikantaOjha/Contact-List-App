@@ -1,22 +1,15 @@
 package com.nalini.contactapp.ui.fragment
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nalini.contactapp.R
@@ -24,7 +17,6 @@ import com.nalini.contactapp.local.*
 import com.nalini.contactapp.repository.ContactRepository
 import com.nalini.contactapp.ui.activity.AddActivityO
 import com.nalini.contactapp.ui.activity.EditActivity
-import com.nalini.contactapp.ui.activity.MainActivity
 import com.nalini.contactapp.ui.activity.ViewActivity
 import com.nalini.contactapp.ui.adapter.ContactAdapter
 import com.nalini.contactapp.ui.adapter.SearchContactAdapter
@@ -35,10 +27,7 @@ import kotlinx.android.synthetic.main.fragment_contacts.*
 
 
 class ContactsFragment : Fragment() ,onView{
-    companion object{
-        var bol =false
-    }
-    private val REQUEST_CODE = 0
+
 
 
     lateinit var contactsViewModel: ContactsViewModel
@@ -63,17 +52,13 @@ class ContactsFragment : Fragment() ,onView{
                 startActivity(Intent(this.context, AddActivityO::class.java))
             }
         Progressbar.visibility=View.VISIBLE
-        val permissions =
-            arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
             contactsDatabase = ContactDatabase.getContactDatabase(requireContext())
             contactsDao = contactsDatabase.getContactDao()
             val contactsRepository = ContactRepository(contactsDao, requireContext())
             val viewModelFactory = ViewModelFactory(contactsRepository)
             contactsViewModel =
                 ViewModelProviders.of(this, viewModelFactory).get(ContactsViewModel::class.java)
-        contactsViewModel.name(this.requireActivity()).observe(this.requireActivity()){
-            Log.d("anliniboolean",it.toString())
-            if (it){
+
                 searchView.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(
                         s: CharSequence,
@@ -161,15 +146,9 @@ class ContactsFragment : Fragment() ,onView{
                 }
                 //Log.d("anliniboolean",it.toString())
 
-            }
-            else{
-                ActivityCompat.requestPermissions(this.requireActivity(), permissions, REQUEST_CODE)
 
-                // Log.d("anliniboolean",it.toString())
 
-            }
 
-        }
             tvEdit.setOnClickListener {
                 startActivity(Intent(this.context, EditActivity::class.java))
             }
@@ -189,7 +168,6 @@ setRecycle()
     override fun onView(contactNumberRelation: ContactsEntity) {
         val intent=Intent(this.context,ViewActivity::class.java)
        intent.putExtra("nalini",contactNumberRelation)
-
         startActivity(intent)
     }
 

@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.nalini.contactapp.R
 import com.nalini.contactapp.local.ContactDatabase
@@ -39,46 +40,17 @@ class MainActivity2 : AppCompatActivity() {
         contactsViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(ContactsViewModel::class.java)
 
-        contactsViewModel.name(this).observe(this){
-        Log.d("anliniboolean",it.toString())
-
-        if (it){
-        startActivity(Intent(this,MainActivity::class.java))
-
-        //Log.d("anliniboolean",it.toString())
-
-        }
-        else{
-        ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE)
-
-       // Log.d("anliniboolean",it.toString())
-
-        }
 
 }
 
 
+    override fun onStart() {
+        super.onStart()
+        if ( ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED){
+            startActivity(Intent(this,MainActivity::class.java))
 
-
-
-
-}
-//
-//    override fun onResume() {
-//        super.onResume()
-//       contactsViewModel.name(this)
-//    }
-
-    override fun onRestart() {
-        super.onRestart()
-        contactsViewModel.Data.observe(this){
-            if (it){
-                startActivity(Intent(this,MainActivity::class.java))
-
-            }else{
-                ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE)
-
-            }
+        }else{
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE)
         }
 
     }

@@ -18,19 +18,6 @@ import kotlinx.coroutines.launch
 
 class ContactsViewModel (val contactsRepository: ContactRepository): ViewModel() {
 
-    private  var data: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-
-    val Data:LiveData<Boolean> =data
-
-    fun name(context: Context):LiveData<Boolean>{
-        if ( ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED){
-            data.postValue(true)
-            return Data
-        }else{
-            data.postValue(false)  // ActivityCompat.requestPermissions(context as Activity, permissions, REQUEST_CODE)
-            return Data
-        }
-    }
 
 
     fun Fetch(): LiveData<ArrayList<ContactNumberRelation>> {

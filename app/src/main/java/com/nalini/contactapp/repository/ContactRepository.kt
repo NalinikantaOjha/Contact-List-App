@@ -42,6 +42,7 @@ class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
             val nameIndex =
                 cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
             val numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+
             do {
                 val contactId = cursor.getString(idIndex)
                 var contactDisplayName = ""
