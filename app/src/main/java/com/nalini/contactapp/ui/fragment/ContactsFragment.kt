@@ -116,7 +116,6 @@ class ContactsFragment : Fragment() ,onView{
                                 contactsList.addAll(it)
                                 Log.d("naliniafter",s.toString()+"string")
                                 RecycleView.visibility=View.VISIBLE
-                                Progressbar.visibility=View.GONE
 
                                 contactAdapter.notifyDataSetChanged()
                             }
@@ -142,6 +141,8 @@ class ContactsFragment : Fragment() ,onView{
                     searchView.setHint("Search among " + contactsList.size + " contact")
                     RecycleView.visibility=View.VISIBLE
                     setRecycle()
+                    Progressbar.visibility=View.GONE
+
 
                 }
                 //Log.d("anliniboolean",it.toString())
