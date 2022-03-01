@@ -26,6 +26,7 @@
         android:layout_marginTop="0dp"
         app:menu="@menu/navigation_manu"
         app:itemTextColor="#87CEEB"
+        app:itemIconTint="@drawable/icon_color"
         app:itemRippleColor="@color/black"
         app:labelVisibilityMode="labeled"
         android:layout_alignParentLeft="true" />
