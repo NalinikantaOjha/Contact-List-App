@@ -48,6 +48,8 @@ suspend    fun addContacts(contactsEntity: ContactsEntity)
     @Transaction
     @Query("SELECT * FROM NumberEntity WHERE name= :id")
      fun getContactNumberRelation(id: String): LiveData<List<ContactNumberRelation?>>
+     @Query("SELECT * FROM contactTable WHERE name=:name")
+     fun getContactEntity(name: String):LiveData<ContactsEntity>
 
 
     @Query("delete from NumberEntity where number= :id and name= :name")

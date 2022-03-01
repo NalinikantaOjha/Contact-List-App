@@ -136,6 +136,9 @@ class ContactsViewModel (val contactsRepository: ContactRepository): ViewModel()
     fun getContactNumberRelation(id:String): LiveData<List<ContactNumberRelation?>> {
         return contactsRepository.getContactNumberRelation(id)
     }
+    fun getContactEntity(name: String):LiveData<ContactsEntity>{
+        return contactsRepository.getContactEntity(name)
+    }
     fun deleteSpecificNumber(id: String,name: String){
         viewModelScope.launch  (Dispatchers.IO){
             contactsRepository.deleteSpecificNumber(id,name)

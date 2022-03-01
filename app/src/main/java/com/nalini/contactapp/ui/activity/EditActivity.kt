@@ -1,27 +1,26 @@
 package com.nalini.contactapp.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nalini.contactapp.R
-import com.nalini.contactapp.local.*
+import com.nalini.contactapp.local.ContactDatabase
+import com.nalini.contactapp.local.ContactNumberRelation
+import com.nalini.contactapp.local.ContactsDao
 import com.nalini.contactapp.repository.ContactRepository
 import com.nalini.contactapp.ui.adapter.EditAdapter
 import com.nalini.contactapp.ui.iterface.OnEdit
 import com.nalini.contactapp.viewmodel.ContactsViewModel
 import com.nalini.contactapp.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_edit.*
-import kotlinx.android.synthetic.main.fragment_contacts.*
 
 class EditActivity : AppCompatActivity() , OnEdit {
     lateinit var contactsViewModel: ContactsViewModel
     lateinit var contactsDao: ContactsDao
     lateinit var contactsDatabase: ContactDatabase
     private var contactsList= mutableListOf<ContactNumberRelation>()
-    lateinit var editAdapter: EditAdapter
+    private lateinit var editAdapter: EditAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,16 +60,16 @@ class EditActivity : AppCompatActivity() , OnEdit {
         }
 
             btnDelete.setOnClickListener {
-                contactsViewModel.getDeleteAllNumber().observe(this, Observer {
+                contactsViewModel.getDeleteAllNumber().observe(this) {
                     it.forEach {
                         contactsViewModel.deleteNumber(it)
                     }
-                })
-                contactsViewModel.getDelete().observe(this, Observer {
+                }
+                contactsViewModel.getDelete().observe(this) {
                     it.forEach {
-                 contactsViewModel.delete(it)
-}
-                })
+                        contactsViewModel.delete(it)
+                    }
+                }
 
 
 

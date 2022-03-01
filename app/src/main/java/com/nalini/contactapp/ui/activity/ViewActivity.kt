@@ -46,6 +46,32 @@ class ViewActivity : AppCompatActivity(),OnCall {
 
             startActivity(intent)
         }
+        tvAddToFavorites.setOnClickListener {
+            contactsViewModel.getContactEntity(contactsEntity?.name.toString()).observe(this,
+                Observer {
+                    it.favorite=true
+                    it.star=true
+                    contactsViewModel.update(it)
+                })
+
+
+        }
+        ivShareVCard.setOnClickListener {
+            contactsViewModel.getContactNumberRelation(contactsEntity!!.name).observe(this, Observer {
+                if(it.size>0) {
+                   val n= it[0]?.number?.get(0)?.number
+                    val sendIntent = Intent()
+                    sendIntent.action = Intent.ACTION_SEND
+                    sendIntent.putExtra(
+                        Intent.EXTRA_TEXT,
+                        n.toString()
+                    )
+                    sendIntent.type = "text/plain"
+                    startActivity(sendIntent)
+                }
+                } )
+
+        }
         setRecycle()
 
     contactsViewModel.getContactNumberRelation(contactsEntity!!.name).observe(this, Observer {

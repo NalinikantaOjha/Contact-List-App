@@ -43,6 +43,8 @@ class AddActivityO : AppCompatActivity() {
         val count = LinerLayoutAdd.childCount
         Log.d("nalinichild", count.toString())
         addNew()
+//        val del: ImageView = LinerLayoutAdd.getChildAt(LinerLayoutAdd.childCount-1).findViewById(R.id.ivImageView)
+//        del.visibility=View.INVISIBLE
 
 
         tvDone.setOnClickListener {
@@ -51,7 +53,7 @@ class AddActivityO : AppCompatActivity() {
             contactsViewModel.CreateContact(contactsEntity)
             Toast.makeText(context, "Done CLICKED", Toast.LENGTH_LONG).show()
 
-            for (i in 5 until LinerLayoutAdd.childCount) {
+            for (i in 5 until LinerLayoutAdd.childCount-1) {
                 Log.d("nalinichild", LinerLayoutAdd.childCount.toString())
 
                 val mode: EditText = LinerLayoutAdd.getChildAt(i).findViewById(R.id.AddMode)
@@ -76,6 +78,7 @@ class AddActivityO : AppCompatActivity() {
         val infalater = LayoutInflater.from(this).inflate(R.layout.add_number_item_layout, null)
         LinerLayoutAdd.addView(infalater, LinerLayoutAdd.childCount)
         val delete: ImageView = infalater.findViewById(R.id.ivImageView)
+
         val num:EditText=infalater.findViewById(R.id.AddPhone)
         delete.setOnClickListener {
             remove(infalater)

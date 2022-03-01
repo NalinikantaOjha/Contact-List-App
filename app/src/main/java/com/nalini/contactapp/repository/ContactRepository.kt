@@ -132,6 +132,9 @@ class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
     fun getContactNumberRelation(id:String):LiveData<List<ContactNumberRelation?>>{
        return contactsDao.getContactNumberRelation(id)
     }
+    fun getContactEntity(name: String):LiveData<ContactsEntity>{
+        return contactsDao.getContactEntity(name)
+    }
     fun SearchData(search:String):LiveData<List<ContactNumberRelation>>{
        return contactsDao.searchData(search)
     }
