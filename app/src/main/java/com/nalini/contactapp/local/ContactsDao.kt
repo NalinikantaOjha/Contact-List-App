@@ -25,6 +25,8 @@ suspend    fun addContacts(contactsEntity: ContactsEntity)
     fun getContacts():LiveData<List<ContactNumberRelation>>
     @Query("select * from contactTable")
     fun getAllContacts():LiveData<List<ContactsEntity>>
+    @Query("select * from contactTable")
+    fun getAllContacts2():List<ContactsEntity>
     @Update
    suspend fun update(contactsEntity: ContactsEntity)
     @Delete
@@ -54,4 +56,6 @@ suspend    fun addContacts(contactsEntity: ContactsEntity)
 
     @Query("delete from NumberEntity where number= :id and name= :name")
     suspend fun deleteSpecificNumber(id:String,name:String)
+    @Query("select * from contactTable where name= :id")
+    fun getTest(id:String):ContactsEntity
 }

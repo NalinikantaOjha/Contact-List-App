@@ -21,7 +21,6 @@ import com.nalini.contactapp.viewmodel.ContactsViewModel
 import com.nalini.contactapp.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_add_o.*
 import kotlinx.android.synthetic.main.activity_add_o.etName
-import kotlinx.android.synthetic.main.activity_edit_contacts.*
 
 
 class AddActivityO : AppCompatActivity() {
@@ -67,7 +66,7 @@ class AddActivityO : AppCompatActivity() {
                     favorite = false,
                     number = num.text.toString()
                 )
-                contactsViewModel.CreateNumber(numbe)
+                contactsViewModel.createNumber(numbe)
 
 
             }

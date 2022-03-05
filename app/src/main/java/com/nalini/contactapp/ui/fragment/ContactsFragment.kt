@@ -85,7 +85,7 @@ class ContactsFragment : Fragment() ,onView{
                         try {
                             if (s.length<10) {
                                 s.toString().toInt()
-                                contactsViewModel.SearchDataNumber(s.toString())
+                                contactsViewModel.searchDataNumber(s.toString())
                                     .observe(viewLifecycleOwner
                                     ) {
                                         it.forEach {
@@ -111,7 +111,7 @@ class ContactsFragment : Fragment() ,onView{
 
 
                         }catch (e:Exception){
-                            contactsViewModel.SearchData(s.toString()).observe(viewLifecycleOwner) {
+                            contactsViewModel.searchData(s.toString()).observe(viewLifecycleOwner) {
                                 contactsList.clear()
                                 contactsList.addAll(it)
                                 Log.d("naliniafter",s.toString()+"string")
@@ -129,7 +129,7 @@ class ContactsFragment : Fragment() ,onView{
                     it.forEach {
                         contactsViewModel.CreateContact(it.contactsEntity)
 
-                        contactsViewModel.CreateNumber(it.number[0])
+                        contactsViewModel.createNumber(it.number[0])
 
                     }
                 }

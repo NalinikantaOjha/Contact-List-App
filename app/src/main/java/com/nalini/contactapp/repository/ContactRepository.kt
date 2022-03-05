@@ -8,6 +8,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.nalini.contactapp.local.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
 
@@ -19,6 +22,7 @@ class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
         ContactsContract.CommonDataKinds.Phone._ID,
         ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
         ContactsContract.CommonDataKinds.Phone.NUMBER,
+        ContactsContract.CommonDataKinds.Phone.PHOTO_URI
     ).toTypedArray()
     val listContacts: ArrayList<ContactNumberRelation> = ArrayList<ContactNumberRelation>()
 
@@ -31,6 +35,7 @@ class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
 
         val cursor: Cursor = cursorLoader.loadInBackground()
 //        val cursor: Cursor = context.contentResolver.query(
+
 //            ContactsContract.Contacts.CONTENT_URI,
 //            projectionFields,
 //            null,
@@ -42,17 +47,23 @@ class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
             val nameIndex =
                 cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
             val numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+            val imageIndex=cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI)
 
             do {
                 val contactId = cursor.getString(idIndex)
                 var contactDisplayName = ""
                 var ContactNumber = ""
+                var uri=""
                 if (cursor.getString(nameIndex) != null) {
                     contactDisplayName = cursor.getString(nameIndex)
                 }
                 if (cursor.getString(numberIndex) != null) {
                     ContactNumber = cursor.getString(numberIndex)
                 }
+                if (cursor.getString(imageIndex)!=null){
+                    uri=cursor.getString(imageIndex)
+                }
+                Log.d("naliniuri",contactDisplayName.toString()+" " +uri.toString())
                 val contactsEntity=ContactsEntity(
                     contactDisplayName,
                     false,
@@ -88,6 +99,9 @@ class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
 
 
     }
+    fun testGet(id:String):ContactsEntity{
+      return  contactsDao.getTest(id)
+    }
 
     fun getContact(): LiveData<List<ContactNumberRelation>> {
         return contactsDao.getContacts()
@@ -95,8 +109,14 @@ class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
     fun getAllContact(): LiveData<List<ContactsEntity>> {
         return contactsDao.getAllContacts()
     }
-    suspend fun CreateContact(contactsEntity: ContactsEntity){
-            contactsDao.addContacts(contactsEntity)
+    fun getContac():List<ContactsEntity>{
+        return contactsDao.getAllContacts2()
+    }
+     fun CreateContact(contactsEntity: ContactsEntity){
+         CoroutineScope(Dispatchers.IO).launch {
+             contactsDao.addContacts(contactsEntity)
+
+         }
     }
     suspend fun CreateContactAll(contactsEntity: List<ContactsEntity>){
         contactsDao.addContactsAll(contactsEntity)

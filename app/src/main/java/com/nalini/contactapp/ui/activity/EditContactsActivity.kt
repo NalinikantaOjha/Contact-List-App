@@ -19,7 +19,6 @@ import com.nalini.contactapp.local.delete
 import com.nalini.contactapp.repository.ContactRepository
 import com.nalini.contactapp.viewmodel.ContactsViewModel
 import com.nalini.contactapp.viewmodel.ViewModelFactory
-import kotlinx.android.synthetic.main.activity_add_o.*
 import kotlinx.android.synthetic.main.activity_edit_contacts.*
 import kotlinx.android.synthetic.main.activity_edit_contacts.etName
 
@@ -53,7 +52,7 @@ class EditContactsActivity : AppCompatActivity() {
                     favorite = false,
                     number = num.text.toString()
                 )
-                contactsViewModel.CreateNumber(numbe)
+                contactsViewModel.createNumber(numbe)
             }
 
             //9	PhoneAKD	AKD	0	0	0	9853208654
@@ -71,7 +70,7 @@ class EditContactsActivity : AppCompatActivity() {
                     favorite = false,
                     number = num.text.toString()
                 )
-                contactsViewModel.CreateNumber(numbe)
+                contactsViewModel.createNumber(numbe)
 
 
             }
@@ -100,7 +99,7 @@ if (it!=null){
                 })
             onBackPressed()
         }
-        contactsViewModel.SearchDataNumberListTest(contactsEntity.toString()).observe(this) {
+        contactsViewModel.searchDataNumberListTest(contactsEntity.toString()).observe(this) {
             if (it.size > 0) {
                 a += it.size
                 nameG=it[0].name
