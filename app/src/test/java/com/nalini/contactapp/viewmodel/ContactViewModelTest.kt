@@ -1,5 +1,4 @@
 package com.nalini.contactapp.viewmodel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth
@@ -16,157 +15,158 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-//@Config(manifest = Config.NONE)
 
-class ContactViewModelTest {
-
-    private val userLiveData= MutableLiveData<ContactsEntity>()
-    private lateinit var   user: LiveData<ContactsEntity>
-    private val contact=ContactsEntity("nalini", track = false, star = false, favorite = false)
-    private val number=NumberEntity("phone","nalini",false,false,false,"897")
-    private val list= mutableListOf<NumberEntity>()
+class ContactViewModelTest  {
 
 
-    private val userLiveData2 = MutableLiveData<List<ContactNumberRelation>>()
-    private lateinit var user2: LiveData<List<ContactNumberRelation>>
-    private val contactNumberRelation = ContactNumberRelation(contact, list)
-    private var listContactNumberRelation= mutableListOf<ContactNumberRelation>()
-
-
-
+    @MockK
+    lateinit var contact:ContactsEntity
     @MockK
     lateinit var repository: ContactRepository
     @MockK
-    lateinit var  mockViewModel : ContactsViewModel
-    @MockK
-    lateinit var mockContact :ContactsEntity
-    @MockK
-    lateinit var mockNumber :NumberEntity
-    lateinit var viewModel:ContactsViewModel
+    lateinit var number :NumberEntity
+    private lateinit var viewModel:ContactsViewModel
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
         viewModel=ContactsViewModel(repository)
-        user=userLiveData
-        user2 = userLiveData2
 
 
     }
-
-    //Get Data test cases
 
     @Test
-    fun is_getAllContacts_true(){
-        userLiveData.postValue(contact)
-        every { repository.getContactEntity("nalini")} returns user
-        assertEquals(user, viewModel.getContactEntity("nalini"))
+    fun is_Fetch_NotNull_true(){
+       val list= arrayListOf<ContactNumberRelation>()
+        coEvery {  repository.fetchAll().value}returns list
+        val a=viewModel.Fetch()
+        Truth.assertThat(a).isNotNull()
     }
-
 
     @Test
     fun getContacts_notNullCheck_true(){
         var list2= listOf<ContactNumberRelation>()
-        coEvery { viewModel.getContacts().value } returns list2
+        coEvery { repository.getContact().value } returns list2
         runBlocking { list2= viewModel.getContacts().value!! }
         Truth.assertThat(list2).isNotNull()
     }
 
-
-
     @Test
-    fun is_getContact_ture() {
-        list.add(number)
-        listContactNumberRelation.add(contactNumberRelation)
-        userLiveData2.postValue(listContactNumberRelation)
-        every { repository.getContact() } returns user2
-        assertEquals(user2,viewModel.getContacts())
+    fun is_getContacts_ture() {
+        val list = mutableListOf<ContactNumberRelation>()
+        every { repository.getContact().value } returns list
+        assertEquals(list,viewModel.getContacts().value)
     }
-
 
     @Test
     fun getAllContacts_isNotNull_true(){
         var list= listOf<ContactsEntity>()
-        coEvery { viewModel.getAllContacts().value }returns list
+        coEvery { repository.getAllContact().value }returns list
         runBlocking { list = viewModel.getAllContacts().value!! }
         Truth.assertThat(list).isNotNull()
     }
 
     @Test
+    fun is_getContactEntity_true(){
+        val contacts2=contact
+        coEvery { repository.getContactEntity("nalini").value} returns contact
+        runBlocking { viewModel.getContactEntity("nalini") }
+        assertEquals(contacts2, viewModel.getContactEntity("nalini").value)
+    }
+
+
+    @Test
    fun getContactEntity_is_instanceCheck_true(){
         var contacts2=contact
-        coEvery { viewModel.getContactEntity("nalini").value }returns contact
+        coEvery { repository.getContactEntity("nalini").value }returns contact
         runBlocking { contacts2 = viewModel.getContactEntity("nalini").value!! }
         Truth.assertThat(contacts2).isInstanceOf(ContactsEntity::class.java)
    }
 
+    @Test
+    fun is_searchData_NotNull_true(){
+        val listContactNumberRelation= mutableListOf<ContactNumberRelation>()
+        coEvery { repository.SearchData("nalini").value}returns listContactNumberRelation
+        val searchData=viewModel.searchData("nalini")
+        Truth.assertThat(searchData).isNotNull()
+    }
 
+    @Test
+    fun is_SearchData_Number_NotNull_true(){
+        val number=MutableLiveData<List<NumberEntity>>()
+        coEvery { repository.SearchDataNumber("8908") }returns number
+        val searchNumber=viewModel.searchDataNumber("8908")
+        Truth.assertThat(searchNumber).isNotNull()
+    }
 
-    // create test
+    @Test
+    fun is_searchDataNumberListTest_NotNull_true(){
+        val numberList= mutableListOf<NumberEntity>()
+        coEvery { repository.SearchDataNumberList("nalini").value }returns numberList
+        val nList=viewModel.SearchDataNumberList("nalini")
+        Truth.assertThat(nList).isNotNull()
+    }
+
     @Test
     fun insertContact_verifyingFunctionCall(){
-        coEvery { mockViewModel.CreateContact(mockContact) }just Runs
-        mockViewModel.CreateContact(mockContact)
-        coVerify { mockViewModel.CreateContact(mockContact) }
+        coEvery { repository.CreateContact(contact) }just Runs
+        viewModel.CreateContact(contact)
+        coVerify { repository.CreateContact(contact) }
+    }
+    @Test
+    fun insertNumber_verifyingFunctionCall() {
+        //stub calls
+        coEvery { repository.CreateNumber(number) }returns Unit
+        //Execute code to test
+        viewModel.createNumber(number)
+        // verify
+       coVerify { repository.CreateNumber(number) }
     }
 
     @Test
-    fun insertContact_verifyingFunctionCall2() {
-        //stub calls
-        every { mockViewModel.CreateContact(mockContact) }returns Unit
-        //Execute code to test
-        mockViewModel.CreateContact(mockContact)
-        // verify
-        verify { mockViewModel.CreateContact(mockContact) }
-    }
-
-    @Test
-    fun deleteContact_verifyingFunctionCall2() {
-        //stub calls
-        every { mockViewModel.delete(mockContact) }returns Unit
-        //Execute code to test
-        mockViewModel.delete(mockContact)
-        // verify
-        verify { mockViewModel.delete(mockContact) }
+    fun getDeleteAllNumber_verifyingFunctionCall() {
+        val numberList= mutableListOf<NumberEntity>()
+       coEvery {  repository.getDeleteAllNumber().value}returns numberList
+        viewModel.getDeleteAllNumber()
+        coVerify { repository.getDeleteAllNumber() }
     }
 
     @Test
     fun updateContact_verifyingFunctionCall() {
         //stub calls
-        every { mockViewModel.update(mockContact) }returns Unit
+        coEvery { repository.update(contact) }returns Unit
         //Execute code to test
-        mockViewModel.update(mockContact)
+         runBlocking {  viewModel.update(contact)}
         // verify
-        verify { mockViewModel.update(mockContact) }
+        coVerify { repository.update(contact) }
     }
 
     @Test
-    fun updateNumber_verifyingFunctionCall() {
-        //stub calls
-        every { mockViewModel.updateNumber(mockNumber) }returns Unit
-        //Execute code to test
-        mockViewModel.updateNumber(mockNumber)
-        // verify
-        verify { mockViewModel.updateNumber(mockNumber) }
+    fun updateNumber_verifyFunctionCall(){
+        coEvery { repository.updateNumber(number) }returns Unit
+        viewModel.updateNumber(number)
+        coVerify { repository.updateNumber(number) }
+    }
+    @Test
+    fun deleteContact_verifyingFunctionCall2() {
+       coEvery { repository.delete(contact) }returns Unit
+        viewModel.delete(contact)
+        coVerify { repository.delete(contact) }
     }
 
     @Test
     fun deleteNumber_verifyingFunctionCall() {
-        //stub calls
-        every { mockViewModel.deleteNumber(mockNumber) }returns Unit
-        //Execute code to test
-        mockViewModel.deleteNumber(mockNumber)
-        // verify
-        verify { mockViewModel.deleteNumber(mockNumber) }
+        every { repository.deleteNumber(number) }returns Unit
+        viewModel.deleteNumber(number)
+        verify { repository.deleteNumber(number) }
     }
     @Test
-    fun createNumber_verifyingFunctionCall() {
-        //stub calls
-        every { mockViewModel.createNumber(mockNumber) }returns Unit
+    fun deleteSpecificNumber_verifyingFunctionCall() {
+        coEvery { repository.deleteSpecificNumber("number","nalini") }returns Unit
         //Execute code to test
-        mockViewModel.createNumber(mockNumber)
+        viewModel.deleteSpecificNumber("number","nalini")
         // verify
-        verify { mockViewModel.createNumber(mockNumber) }
+        coVerify { repository.deleteSpecificNumber("number","nalini") }
     }
 
 }

@@ -28,9 +28,7 @@ class ContactsViewModel (val contactsRepository: ContactRepository): ViewModel()
             return contactsRepository.getAllContact()
     }
 
-    fun getContac():List<ContactsEntity>{
-        return contactsRepository.getContac()
-    }
+
 
     fun getContactEntity(name: String):LiveData<ContactsEntity>{
         return contactsRepository.getContactEntity(name)
@@ -43,6 +41,7 @@ class ContactsViewModel (val contactsRepository: ContactRepository): ViewModel()
     fun searchDataNumber(search:String): LiveData<List<NumberEntity>> {
         return contactsRepository.SearchDataNumber(search)
     }
+
     fun searchDataNumberListTest(search:String): LiveData<List<NumberEntity>> {
         return contactsRepository.SearchDataNumberListTest(search)
     }
@@ -88,11 +87,7 @@ class ContactsViewModel (val contactsRepository: ContactRepository): ViewModel()
         return contactsRepository.SearchDataNumberList(search)
     }
 
-    fun CreateContactAll(contactsEntity: List<ContactsEntity>){
-        viewModelScope.launch  (Dispatchers.IO){
-            contactsRepository.CreateContactAll(contactsEntity)
-        }
-    }
+
 
     fun update(contactsEntity: ContactsEntity) {
         viewModelScope.launch(Dispatchers.IO) {
