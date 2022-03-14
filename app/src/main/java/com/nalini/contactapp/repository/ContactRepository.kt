@@ -1,102 +1,85 @@
 package com.nalini.contactapp.repository
 
-import android.content.ContentProviderOperation
 import android.content.Context
 import android.database.Cursor
 import android.provider.ContactsContract
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.nalini.contactapp.local.*
+import com.nalini.contactapp.local.ContactNumberRelation
+import com.nalini.contactapp.local.ContactsDao
+import com.nalini.contactapp.local.ContactsEntity
+import com.nalini.contactapp.local.NumberEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
+class  ContactRepository @Inject constructor(val contactsDao: ContactsDao,val context: Context) {
+//    val contacts: LiveData<List<ContactNumberRelation>> = contactsDao.getContacts()
 
-
-    private val userLiveData= MutableLiveData<ArrayList<ContactNumberRelation>>()
-    val  user:LiveData<ArrayList<ContactNumberRelation>>
-        get()=userLiveData
     val projectionFields= listOf<String>(
         ContactsContract.CommonDataKinds.Phone._ID,
         ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
         ContactsContract.CommonDataKinds.Phone.NUMBER,
         ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI
     ).toTypedArray()
-    val listContacts: ArrayList<ContactNumberRelation> = ArrayList<ContactNumberRelation>()
 
-    fun fetchAll(): LiveData<ArrayList<ContactNumberRelation>> {
-                val cursorLoader = android.content.CursorLoader(context,
+
+    fun fetchAll(){
+        var numberList= mutableListOf<NumberEntity>()
+        var contalist= mutableListOf<ContactsEntity>()
+
+        val cursor: Cursor = context.contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-            projectionFields, null,null,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
-        )
+            projectionFields,
+            null,
+            null,
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")!!
 
-
-        val cursor: Cursor = cursorLoader.loadInBackground()
-//        val cursor: Cursor = context.contentResolver.query(
-//            ContactsContract.Contacts.CONTENT_URI,
-//            projectionFields,
-//            null,
-//            null,
-//            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")!!
         val contactsMap: MutableMap<String, ContactNumberRelation> = HashMap<String, ContactNumberRelation>(cursor.count)
-        var j=0
 
         if (cursor.moveToFirst()) {
             val idIndex = cursor.getColumnIndex(ContactsContract.Contacts._ID)
-            val nameIndex =
-                cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+            val nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
             val numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
             val imageIndex=cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_THUMBNAIL_URI)
 
             do {
+
                 val contactId = cursor.getString(idIndex)
-                var contactDisplayName = ""
-                var ContactNumber = ""
+                val  contactDisplayName = cursor.getString(nameIndex)
+                val ContactNumber = cursor.getString(numberIndex)
                 var uri=""
-                if (cursor.getString(nameIndex) != null) {
-                    contactDisplayName = cursor.getString(nameIndex)
-                }
-                if (cursor.getString(numberIndex) != null) {
-                    ContactNumber = cursor.getString(numberIndex)
-                }
+//                if (cursor.getString(nameIndex) != null) {
+//                    contactDisplayName = cursor.getString(nameIndex)
+//                }
+//                if (cursor.getString(numberIndex) != null) {
+//                    ContactNumber = cursor.getString(numberIndex)
+//                }
                 if (cursor.getString(imageIndex)!=null){
                     uri=cursor.getString(imageIndex)
                 }
-                Log.d(j.toString()+" "+"naliniuri",contactDisplayName.toString()+" " +uri.toString()+contactId.toString())
-                j++
-                val contactsEntity=ContactsEntity(
-                    contactDisplayName,
-                    false,
-                    false,
-                    false)
-                var numberList= mutableListOf<NumberEntity>()
-                val number=NumberEntity("Phone$contactDisplayName",
-                    contactDisplayName,
-                    false,
-                    false,
-                    false,
+                val contactsEntity=ContactsEntity(contactDisplayName, false, false, false,contactId)
+                val number=NumberEntity("Phone$contactId", contactId, false, false, false,
                 ContactNumber)
                 numberList.add(number)
+                contalist.add(contactsEntity)
                 val contact = ContactNumberRelation(contactsEntity,numberList)
-//                    contactDisplayName,
-//                    contactId.toInt(),
-//                    false,
-//                    false,
-//                    false,
-//                    ContactNumber
-               // )
                 contactsMap[contactId] = contact
-                listContacts.add(contact)
                 Log.d("nalinitest", contactDisplayName)
-
             } while (cursor.moveToNext())
         }
-        userLiveData.postValue(listContacts)
-        return user
+        op(contalist,numberList)
     }
-
+    fun op(list:List<ContactsEntity>,list2:List<NumberEntity>){
+        CoroutineScope(Dispatchers.IO).launch {
+            contactsDao.deleteAllDataFromNumber()
+            contactsDao.deleteAllDataFromContact()
+            contactsDao.addContactsAll(list)
+            contactsDao.addNumberAll(list2)
+        }
+    }
     fun getContact(): LiveData<List<ContactNumberRelation>> {
         return contactsDao.getContacts()
     }
@@ -183,3 +166,17 @@ class ContactRepository (val contactsDao: ContactsDao,val context: Context) {
 
 
 }
+
+
+
+
+
+/*
+//                val cursorLoader = android.content.CursorLoader(context,
+//            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+//            projectionFields, null,null,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+//        )
+//
+//
+//        val cursor: Cursor = cursorLoader.loadInBackground()
+ */

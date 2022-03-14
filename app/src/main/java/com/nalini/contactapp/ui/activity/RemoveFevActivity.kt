@@ -1,6 +1,7 @@
 package com.nalini.contactapp.ui.activity
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,24 +14,19 @@ import com.nalini.contactapp.ui.adapter.RemoveAdapter
 import com.nalini.contactapp.ui.iterface.OnRemove
 import com.nalini.contactapp.viewmodel.ContactsViewModel
 import com.nalini.contactapp.viewmodel.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_remove_fev.*
-
+@AndroidEntryPoint
 class RemoveFevActivity : AppCompatActivity() , OnRemove {
-    lateinit var contactsViewModel: ContactsViewModel
-    lateinit var contactsDao: ContactsDao
-    private lateinit var contactsDatabase: ContactDatabase
+private val contactsViewModel by viewModels<ContactsViewModel>()
+
     private var removeList= mutableListOf<ContactsEntity>()
     private lateinit var removeAdapter: RemoveAdapter
     private var remove= mutableListOf<ContactsEntity>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_remove_fev)
-        contactsDatabase = ContactDatabase.getContactDatabase(this)
-        contactsDao = contactsDatabase.getContactDao()
-        val contactsRepository= ContactRepository(contactsDao,this)
-        val viewModelFactory = ViewModelFactory(contactsRepository)
-        contactsViewModel= ViewModelProviders.of(this,viewModelFactory).
-        get(ContactsViewModel::class.java)
+
 
 
 

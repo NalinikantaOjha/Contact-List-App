@@ -6,26 +6,19 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProviders
 import com.nalini.contactapp.R
-import com.nalini.contactapp.local.ContactDatabase
-import com.nalini.contactapp.local.ContactsDao
-import com.nalini.contactapp.repository.ContactRepository
-import com.nalini.contactapp.viewmodel.ContactsViewModel
-import com.nalini.contactapp.viewmodel.ViewModelFactory
 
 class MainActivity2 : AppCompatActivity() {
     private val REQUEST_CODE = 0
     private var check=false
     val context=this
-    lateinit var contactsViewModel: ContactsViewModel
-    lateinit var contactsDao: ContactsDao
-    lateinit var contactsDatabase: ContactDatabase
+//    lateinit var contactsViewModel: ContactsViewModel
+//    lateinit var contactsDao: ContactsDao
+//    lateinit var contactsDatabase: ContactDatabase
     val permissions =
         arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,12 +26,12 @@ class MainActivity2 : AppCompatActivity() {
         setContentView(R.layout.activity_main2)
 
 
-        contactsDatabase = ContactDatabase.getContactDatabase(this)
-        contactsDao = contactsDatabase.getContactDao()
-        val contactsRepository = ContactRepository(contactsDao,this)
-        val viewModelFactory = ViewModelFactory(contactsRepository)
-        contactsViewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(ContactsViewModel::class.java)
+//        contactsDatabase = ContactDatabase.getContactDatabase(this)
+//        contactsDao = contactsDatabase.getContactDao()
+//        val contactsRepository = ContactRepository(contactsDao,this)
+//        val viewModelFactory = ViewModelFactory(contactsRepository)
+//        contactsViewModel =
+//            ViewModelProviders.of(this, viewModelFactory).get(ContactsViewModel::class.java)
 
 
 }

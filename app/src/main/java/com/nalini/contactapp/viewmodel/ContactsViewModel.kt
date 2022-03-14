@@ -1,41 +1,39 @@
 package com.nalini.contactapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nalini.contactapp.local.ContactDatabase
 import com.nalini.contactapp.local.ContactNumberRelation
 import com.nalini.contactapp.local.ContactsEntity
 import com.nalini.contactapp.local.NumberEntity
 import com.nalini.contactapp.repository.ContactRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@HiltViewModel
+class ContactsViewModel @Inject constructor(val contactsRepository: ContactRepository): ViewModel() {
+    var user:LiveData<List<ContactNumberRelation>>  = contactsRepository.getContact()
 
-class ContactsViewModel (val contactsRepository: ContactRepository): ViewModel() {
-
-
-
-    fun Fetch(): LiveData<ArrayList<ContactNumberRelation>> {
-    return contactsRepository.fetchAll()
-
+    fun fetch() {
+     contactsRepository.fetchAll()
    }
 
-    fun getContacts(): LiveData<List<ContactNumberRelation>> {
-        return contactsRepository.getContact()
-    }
 
     fun getAllContacts(): LiveData<List<ContactsEntity>> {
             return contactsRepository.getAllContact()
     }
 
-
-
     fun getContactEntity(name: String):LiveData<ContactsEntity>{
         return contactsRepository.getContactEntity(name)
     }
 
-    fun searchData(search:String): LiveData<List<ContactNumberRelation>> {
-        return contactsRepository.SearchData(search)
+    fun searchData(search:String){
+        user=contactsRepository.SearchData(search.toString())
     }
 
     fun searchDataNumber(search:String): LiveData<List<NumberEntity>> {

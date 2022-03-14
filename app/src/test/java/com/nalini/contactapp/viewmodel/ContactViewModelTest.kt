@@ -15,7 +15,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-
 class ContactViewModelTest  {
 
 
@@ -29,7 +28,11 @@ class ContactViewModelTest  {
 
     @Before
     fun setUp() {
+        val list= mutableListOf<ContactNumberRelation>()
         MockKAnnotations.init(this)
+coEvery {
+    repository.getContact().value
+}  returns   list
         viewModel=ContactsViewModel(repository)
 
 
@@ -37,26 +40,12 @@ class ContactViewModelTest  {
 
     @Test
     fun is_Fetch_NotNull_true(){
-       val list= arrayListOf<ContactNumberRelation>()
-        coEvery {  repository.fetchAll().value}returns list
-        val a=viewModel.Fetch()
+        coEvery {  repository.fetchAll()}returns Unit
+        val a=viewModel.fetch()
         Truth.assertThat(a).isNotNull()
     }
 
-    @Test
-    fun getContacts_notNullCheck_true(){
-        var list2= listOf<ContactNumberRelation>()
-        coEvery { repository.getContact().value } returns list2
-        runBlocking { list2= viewModel.getContacts().value!! }
-        Truth.assertThat(list2).isNotNull()
-    }
 
-    @Test
-    fun is_getContacts_ture() {
-        val list = mutableListOf<ContactNumberRelation>()
-        every { repository.getContact().value } returns list
-        assertEquals(list,viewModel.getContacts().value)
-    }
 
     @Test
     fun getAllContacts_isNotNull_true(){
@@ -65,7 +54,7 @@ class ContactViewModelTest  {
         runBlocking { list = viewModel.getAllContacts().value!! }
         Truth.assertThat(list).isNotNull()
     }
-
+//
     @Test
     fun is_getContactEntity_true(){
         val contacts2=contact
@@ -82,7 +71,7 @@ class ContactViewModelTest  {
         runBlocking { contacts2 = viewModel.getContactEntity("nalini").value!! }
         Truth.assertThat(contacts2).isInstanceOf(ContactsEntity::class.java)
    }
-
+//
     @Test
     fun is_searchData_NotNull_true(){
         val listContactNumberRelation= mutableListOf<ContactNumberRelation>()
@@ -90,7 +79,7 @@ class ContactViewModelTest  {
         val searchData=viewModel.searchData("nalini")
         Truth.assertThat(searchData).isNotNull()
     }
-
+//
     @Test
     fun is_SearchData_Number_NotNull_true(){
         val number=MutableLiveData<List<NumberEntity>>()
@@ -106,7 +95,7 @@ class ContactViewModelTest  {
         val nList=viewModel.SearchDataNumberList("nalini")
         Truth.assertThat(nList).isNotNull()
     }
-
+//
     @Test
     fun insertContact_verifyingFunctionCall(){
         coEvery { repository.CreateContact(contact) }just Runs
@@ -122,7 +111,7 @@ class ContactViewModelTest  {
         // verify
        coVerify { repository.CreateNumber(number) }
     }
-
+//
     @Test
     fun getDeleteAllNumber_verifyingFunctionCall() {
         val numberList= mutableListOf<NumberEntity>()
